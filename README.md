@@ -85,9 +85,10 @@ Game app that scores how fast users can type.
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="https://github.com/FragFault/SpeedType/blob/main/2.png" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
+<img src="https://github.com/FragFault/SpeedType/blob/main/1.PNG" width=600>
 
 ### [BONUS] Interactive Prototype
 
