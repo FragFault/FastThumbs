@@ -66,6 +66,9 @@ Game app that scores how fast users can type.
 * Leaderboard
       * The user can see the top 20 scores of every player and click on a user profile which directs them to their profile
 
+* Profile
+      * The user can see their average competetive Acuracy and Speed. They can also see their number of points. If they scroll further down they can see the resukts of the last three games played. There is a button on the top right that takes the user to the settings page
+
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
@@ -85,9 +88,11 @@ Game app that scores how fast users can type.
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="https://github.com/FragFault/SpeedType/blob/main/2.png" width=600>
+<img src="https://github.com/FragFault/SpeedType/blob/main/3.jpg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
+<img src="https://github.com/FragFault/SpeedType/blob/main/2.png" width=600>
+
 <img src="https://github.com/FragFault/SpeedType/blob/main/1.PNG" width=600>
 
 ### [BONUS] Interactive Prototype
