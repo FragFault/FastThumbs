@@ -64,28 +64,50 @@ Game app that scores how fast users can type.
     * User can type and see their progress and errors in real time. Theres a back button that directs the user back to the game selection screen
  
 * Leaderboard
-      * The user can see the top 20 scores of every player and click on a user profile which directs them to their profile
+    * The user can see the top 20 scores of every player and click on a user profile which directs them to their profile
 
 * Profile
-      * The user can see their average competetive Acuracy and Speed. They can also see their number of points. If they scroll further down they can see the resukts of the last three games played. There is a button on the top right that takes the user to the settings page
+    * The user can see their average competetive Acuracy and Speed. They can also see their number of points. If they scroll further down they can see the resukts of the last three games played. There is a button on the top right that takes the user to the settings page
+    
+* Settings
+    * The user can change the app theme, toggle notifications, delete their account or report a bug
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Leaderboard
+* Play Game
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* Login 
+   * Registration
+   * Selection Screen (Home)
+   
+* Registration
+   * Selection Screen (Home)
+   * Login
 
+* Selection Screen
+   * Jumps to game
+
+* Gameplay Screen
+   * Keyboard
+   * Results screen jumps to home
+
+* Leaderboard
+   * Jumps to profile
+
+* Profile 
+   * Text Fields to be modified
+   * Jumps to settings
+
+* Settings
+   * Toggle settings
+   * Button to report or delete account
+  
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
 <img src="https://github.com/FragFault/SpeedType/blob/main/3.jpg" width=600>
