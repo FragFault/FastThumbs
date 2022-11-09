@@ -122,7 +122,17 @@ Game app that scores how fast users can type.
 ## Schema
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+#### Post
+
+   | Property  	| Type 	| Description |
+   | ------------- | -------- | ------------|
+   | Player	| Pointer to User    | unique id for user (default field) |
+   | Average Accuracy   |  Number  | Value for user accuracy |
+   | Average Speed     	| Number  | Value for user speed |
+   | Points  	| Number  | Cumulative points for games played and daily challenges done |
+   | Profile Picture | File   | User profile image |
+   | Bio	| String   | Profile caption from user  |
+   | Games played	| Number | Number of games user has played |
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
