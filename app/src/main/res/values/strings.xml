@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">SimpleTodo</string>
+    <string name="app_name">FastThumbs</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">NdFNJtFh4hILjTdTAfdnvKEumyD8vkZt26VA0lRu</string>
+    <string name="back4app_client_key">Au9930tejc8FKImsNCPmdr40Z2s4iRqSPmrjgNNl</string>
+
 </resources>
