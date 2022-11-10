@@ -118,6 +118,8 @@ Game app that scores how fast users can type.
 <img src="https://github.com/FragFault/SpeedType/blob/main/1.PNG" width=600>
 
 ### [BONUS] Interactive Prototype
+<img src='prototype.gif' title='Video Prototype Walkthrough' width='' alt='Video Prototype Walkthrough' />
+
 
 ## Schema
 [This section will be completed in Unit 9]
