@@ -136,7 +136,25 @@ Game app that scores how fast users can type.
    | Bio	| String   | Profile caption from user  |
    | Games played	| Number | Number of games user has played |
 ### Networking
-- [Add list of network requests by screen ]
+-Login Page
+	-(Read/GET) use to verify user exist
+-Register Page
+	-(Create/POST) creates new user 
+-Home
+	-(Read/GET) checks if daily completed
+	-(Read/GET) checks if Dark mode is on
+-LeaderBoards
+	-(Read/GET) Fetches players descending order 
+-Profile
+	-(Read/GET) fetches user Info 
+-Game screen
+	-(Read/GET) fetches user stats
+	-(Update/PUT) Updates user stats 
+-Settings
+	-(Update/PUT) updates settings dark mode/notifications
+	-(Delete/DELETE) Deletes user account
+	-(Create/POST) new bug post 
+  
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 
