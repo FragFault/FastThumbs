@@ -136,21 +136,21 @@ Game app that scores how fast users can type.
    | Bio	| String   | Profile caption from user  |
    | Games played	| Number | Number of games user has played |
 ### Networking
--Login Page <br />
+*Login Page <br />
 	-(Read/GET) use to verify user exist
--Register Page <br />
+*Register Page <br />
 	-(Create/POST) creates new user <br />
--Home <br />
+*Home <br />
 	-(Read/GET) checks if daily completed <br />
 	-(Read/GET) checks if Dark mode is on <br />
--LeaderBoards <br />
+*LeaderBoards <br />
 	-(Read/GET) Fetches players descending order <br />
--Profile <br />
+*Profile <br />
 	-(Read/GET) fetches user Info <br />
--Game screen <br />
+*Game screen <br />
 	-(Read/GET) fetches user stats <br />
 	-(Update/PUT) Updates user stats <br />
--Settings <br />
+*Settings <br />
 	-(Update/PUT) updates settings dark mode/notifications <br />
 	-(Delete/DELETE) Deletes user account <br />
 	-(Create/POST) new bug post <br />
