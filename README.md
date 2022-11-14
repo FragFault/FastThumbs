@@ -165,8 +165,8 @@ Game app that scores how fast users can type.
 Networking
 List of network requests by screen
 
-Sign In Screen
-(Read/GET) Check if login information exists and is accurate
+* Sign In Screen
+   * (Read/GET) Check if login information exists and is accurate
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -183,8 +183,8 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 });
 ```
 
-Register Screen
-(Read/GET) Check if new user information is unique & (Create/POST) Register new user
+* Register Screen
+   * (Read/GET) Check if new user information is unique & (Create/POST) Register new user
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -215,8 +215,8 @@ gamePlayedObject.saveInBackground();
   }
 ```
 
-Leaderboard
-(Read/GET) Get all relevant user info to display top ten players
+* Leaderboard
+   * (Read/GET) Get all relevant user info to display top ten players
 ```swift
  ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -239,8 +239,8 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
     }
 });
 ```
-Other User Profile
-(Read/GET) Get all user profile information to display
+* Other User Profile
+   * (Read/GET) Get all user profile information to display
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -271,27 +271,27 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 ```
 
 
-Play Screen
-(Read/GET) Get the prompt from API for user to type
+* Play Screen
+   * (Read/GET) Get the prompt from API for user to type
 	*** Don't have this API established yet ***
 
-Results Screen
-(Create/POST) Create new entry in Games Played Log
-	```swift
-ParseObject gameLogObject = new ParseObject("gamesPlayedLog");
-gamesLogObject.put("username", "---var-goes-here---");
-// Date not here cause its autocreated
-gamesLogObject.put("points", "---var-goes-here---");
-gamesLogObject.put("accuracy", "---var-goes-here---");
-gamesLogObject.put("speed", "---var-goes-here---");
-gamesLogObject.put("category", "---var-goes-here---");
-gamesLogObject.put("daily", "---var-goes-here---");
-gamesLogObject.put("competitive", "---var-goes-here---");
+* Results Screen
+   * (Create/POST) Create new entry in Games Played Log
+```swift
+	ParseObject gameLogObject = new ParseObject("gamesPlayedLog");
+	gamesLogObject.put("username", "---var-goes-here---");
+	// Date not here cause its autocreated
+	gamesLogObject.put("points", "---var-goes-here---");
+	gamesLogObject.put("accuracy", "---var-goes-here---");
+	gamesLogObject.put("speed", "---var-goes-here---");
+	gamesLogObject.put("category", "---var-goes-here---");
+	gamesLogObject.put("daily", "---var-goes-here---");
+	gamesLogObject.put("competitive", "---var-goes-here---");
 
-gamesLogObject.saveInBackground();
+	gamesLogObject.saveInBackground();
 ```
 
-(Update/PUT) Update new user total score after game played & increment gamesPlayed by one
+* (Update/PUT) Update new user total score after game played & increment gamesPlayed by one
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -314,8 +314,8 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 ```
 
 	
-Personal Profile
-(Read/GET) Get all user profile information to display
+* Personal Profile
+   * (Read/GET) Get all user profile information to display
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -347,7 +347,7 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 
 
 
-(Update/PUT) Change personal profile picture
+* (Update/PUT) Change personal profile picture
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -364,7 +364,7 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 });
 ```
 
-(Update/PUT) Change personal bio
+* (Update/PUT) Change personal bio
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -382,11 +382,9 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 ```
 
 
-
-
- Settings
-(Delete) Delete user profile and all their games played
-	```swift
+* Settings
+   * (Delete) Delete user profile and all their games played
+```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.whereEqualTo("username", "---username-goes-here---");
 query.findInBackground(new FindCallback<ParseObject>() {
@@ -398,7 +396,7 @@ query.findInBackground(new FindCallback<ParseObject>() {
         }
     }
 });
-	```
+```
 
   
 - [Create basic snippets for each Parse network request]
