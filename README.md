@@ -160,7 +160,6 @@ Game app that scores how fast users can type.
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
 
-Networking
 List of network requests by screen
 
 * Sign In Screen
@@ -194,16 +193,17 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 
         // TODO -> Check if login info already exists, if not then proceed to create new user
         
-            ParseObject gamePlayedObject = new ParseObject("gamesPlayedLog");
-gamePlayedObject.put("username", "---var-goes-here---");
-gamePlayedObject.put("points", "---var-goes-here---");
-gamePlayedObject.put("Average Accuracy", "---var-goes-here---");
-gamePlayedObject.put("Average Speed", "---var-goes-here---");
-gamePlayedObject.put("category", "---var-goes-here---");
-gamePlayedObject.put("daily", "---var-goes-here---");
-gamePlayedObject.put("competitive", "---var-goes-here---");
+	ParseObject gamePlayedObject = new ParseObject("gamesPlayedLog");
+	
+	gamePlayedObject.put("username", "---var-goes-here---");
+	gamePlayedObject.put("points", "---var-goes-here---");
+	gamePlayedObject.put("Average Accuracy", "---var-goes-here---");
+	gamePlayedObject.put("Average Speed", "---var-goes-here---");
+	gamePlayedObject.put("category", "---var-goes-here---");
+	gamePlayedObject.put("daily", "---var-goes-here---");
+	gamePlayedObject.put("competitive", "---var-goes-here---");
 
-gamePlayedObject.saveInBackground();
+	gamePlayedObject.saveInBackground();
 
 
       
@@ -289,7 +289,7 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 	gamesLogObject.saveInBackground();
 ```
 
-* (Update/PUT) Update new user total score after game played & increment gamesPlayed by one
+   * (Update/PUT) Update new user total score after game played & increment gamesPlayed by one
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -345,7 +345,7 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 
 
 
-* (Update/PUT) Change personal profile picture
+   * (Update/PUT) Change personal profile picture
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
@@ -362,7 +362,7 @@ query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>()
 });
 ```
 
-* (Update/PUT) Change personal bio
+   * (Update/PUT) Change personal bio
 ```swift
 ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
 query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
