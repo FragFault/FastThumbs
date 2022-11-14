@@ -1,8 +1,8 @@
-# SpeedType
+# FastThumbs
 Original App Design Project - README Template
 ===
 
-# SpeedType
+# FastThumbs
 
 ## Table of Contents
 1. [Overview](#Overview)
