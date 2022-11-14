@@ -154,8 +154,6 @@ Game app that scores how fast users can type.
 
 
 
-###API’s
-- Genius [Song Name, Lyrics]
    
 ### Networking
 - [Add list of network requests by screen ]
