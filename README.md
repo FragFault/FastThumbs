@@ -124,36 +124,282 @@ Game app that scores how fast users can type.
 ## Schema
 [This section will be completed in Unit 9]
 ### Models
-#### Post
+#### users
 
-   | Property  	| Type 	| Description |
-   | ------------- | -------- | ------------|
-   | Player	| Pointer to User    | unique id for user (default field) |
-   | Average Accuracy   |  Number  | Value for user accuracy |
-   | Average Speed     	| Number  | Value for user speed |
-   | Points  	| Number  | Cumulative points for games played and daily challenges done |
-   | Profile Picture | File   | User profile image |
-   | Bio	| String   | Profile caption from user  |
-   | Games played	| Number | Number of games user has played |
+   | Property  	      | Type 	 | Description                                            |
+   | -------------    | -------- | ------------                                           |
+   | username	      | String   | Unique username for user (default field & autocreated) |
+   | email	      | String   | Unique email for user for login                        |
+   | password	      | String   | User password for login                                |
+   | profilePicture   | File     | User profile image                                     |
+   | bio	                 | String   | Profile caption from user                              |
+   | totalPoints       | Number   | Cumulative points for games & daily challenges played  |
+   | averageAccuracy  | Number   | Value for overall user accuracy (excludes casual mode) |
+   | averageSpeed     | Number   | Value for overall user speed (excludes casual)         |
+   | gamesPlayed      | Number   | Number of games user played                            |
+
+#### gamesPlayedLog
+
+   | Property | Type 	        | Description                                                    |
+   | -------  | --------        | ------------                                                   |
+   | username | Pointer to User | Unique id for user (default field & foreign key)               |
+   | date          | Date            | Date & time of when user played game (autocreated by backend)  |
+   | points       | Number          | Points played achieved from playing game                       |
+   | accuracy  | Number          | Value for user accuracy                                        |
+   | speed      | Number          | Value for user speed                                           |
+   | category  | String             | Name of category user played                                   |
+   | daily         | Boolean         | True if game played was the daily challenge                    |
+   | competitive | Boolean      | True if game played was in competitive mode                    | 
+
+
+
+
+###API’s
+- Genius [Song Name, Lyrics]
+   
 ### Networking
-* Login Page 
-	*(Read/GET) use to verify user exist
-* Register Page
-	* (Create/POST) creates new user
-* Home
-	* (Read/GET) checks if daily completed
-	* (Read/GET) checks if Dark mode is on
-* LeaderBoards
-	* (Read/GET) Fetches players descending order
-* Profile
-	* (Read/GET) fetches user Info
-* Game screen
-	* (Read/GET) fetches user stats
-	* (Update/PUT) Updates user stats
-* Settings
-	* (Update/PUT) updates settings dark mode/notifications
-	* (Delete/DELETE) Deletes user account
-	* (Create/POST) new bug post
+- [Add list of network requests by screen ]
+- [Create basic snippets for each Parse network request]
+- [OPTIONAL: List endpoints if using existing API such as Yelp]
+
+Networking
+List of network requests by screen
+
+Sign In Screen
+(Read/GET) Check if login information exists and is accurate
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      String username = userObject.getString("username");
+      String email = userObject.getString("email");
+      String password = userObject.getString("password");
+      // TODO -> Compare login info & signin if match occurs
+    } else {
+      // something went wrong
+    }
+  }
+});
+```
+
+Register Screen
+(Read/GET) Check if new user information is unique & (Create/POST) Register new user
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+        String username = userObject.getString("username");
+        String email = userObject.getString("email");
+        String password = userObject.getString("password");
+
+        // TODO -> Check if login info already exists, if not then proceed to create new user
+        
+            ParseObject gamePlayedObject = new ParseObject("gamesPlayedLog");
+gamePlayedObject.put("username", "---var-goes-here---");
+gamePlayedObject.put("points", "---var-goes-here---");
+gamePlayedObject.put("Average Accuracy", "---var-goes-here---");
+gamePlayedObject.put("Average Speed", "---var-goes-here---");
+gamePlayedObject.put("category", "---var-goes-here---");
+gamePlayedObject.put("daily", "---var-goes-here---");
+gamePlayedObject.put("competitive", "---var-goes-here---");
+
+gamePlayedObject.saveInBackground();
+
+
+      
+    } else {
+      // something went wrong
+    }
+  }
+```
+
+Leaderboard
+(Read/GET) Get all relevant user info to display top ten players
+```swift
+ ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      query.orderByDescending("totalPoints");
+      query.setLimit(10);
+    query.findInBackground(new FindCallback<ParseObject>() {
+    public void done(List<ParseObject> topPlayersListObject, ParseException e) {
+        if (e == null) {
+            // Loop through top list object for top ten player info
+            for (let i = 0; i < topPlayersListObject.length;i++) {
+                String topPlayersListObject[i].get("username");
+                String topPlayersListObject[i].get("profilePicture");
+                int topPlayersListObject[i].get("totalPoints");
+            }
+        } else {
+            // ERROR NEED TO HANDLE
+        }
+    }
+});
+```
+Other User Profile
+(Read/GET) Get all user profile information to display
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      String profilePicture = userObject.getString("Profile Picture");
+      String bio = userObject.getString("Bio");
+      int totalPoints = userObject.getInt("totalPoints")
+      int averageAccuracy = userObject.getInt("averageAccuracy");
+      int averageSpeed = userObject.getInt("averageSpeed");
+      int gamesPlayed = userObject.getInt("Games Played")
+      
+      // query for last 3 played games
+      
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("gamesPlayedLog");
+        query.whereEqualTo("username", "---username-goes-here---");
+        query.orderByDescending("Date");
+        query.setLimit(3);
+        query.findInBackground(new FindCallback<ParseObject>() {
+        public void done(List<ParseObject> scoreList, ParseException e) {
+        if (e == null) {
+            // TODO -> Display last 3 played games
+        } else {
+            // ERROR NEED TO HANDLE
+        }
+    }
+});
+```
+
+
+Play Screen
+(Read/GET) Get the prompt from API for user to type
+	*** Don't have this API established yet ***
+
+Results Screen
+(Create/POST) Create new entry in Games Played Log
+	```swift
+ParseObject gameLogObject = new ParseObject("gamesPlayedLog");
+gamesLogObject.put("username", "---var-goes-here---");
+// Date not here cause its autocreated
+gamesLogObject.put("points", "---var-goes-here---");
+gamesLogObject.put("accuracy", "---var-goes-here---");
+gamesLogObject.put("speed", "---var-goes-here---");
+gamesLogObject.put("category", "---var-goes-here---");
+gamesLogObject.put("daily", "---var-goes-here---");
+gamesLogObject.put("competitive", "---var-goes-here---");
+
+gamesLogObject.saveInBackground();
+```
+
+(Update/PUT) Update new user total score after game played & increment gamesPlayed by one
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      int totalScore = userObject.getInt("totalPoints");
+      // Game Logic not finalized, so lets say points earned from
+      // game recently played is in variable "gamePoints"
+      totalScore += gamePoints;
+      userObject.put("totalPoints");
+      userObject.increment(“gamesPlayed”);
+      // Save update user score to backend here
+      userObject.saveInBackground();
+      
+    } else {
+      // something went wrong
+    }
+  }
+});
+```
+
+	
+Personal Profile
+(Read/GET) Get all user profile information to display
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      String profilePicture = userObject.getString("Profile Picture");
+      String bio = userObject.getString("Bio");
+      int totalPoints = userObject.getInt("totalPoints")
+      int averageAccuracy = userObject.getInt("averageAccuracy");
+      int averageSpeed = userObject.getInt("averageSpeed");
+      int gamesPlayed = userObject.getInt("Games Played")
+      
+      // query for last 3 played games
+      
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("gamesPlayedLog");
+        query.whereEqualTo("username", "---username-goes-here---");
+        query.orderByDescending("Date");
+        query.setLimit(3);
+        query.findInBackground(new FindCallback<ParseObject>() {
+        public void done(List<ParseObject> scoreList, ParseException e) {
+        if (e == null) {
+            // TODO -> Display last 3 played games
+        } else {
+            // ERROR NEED TO HANDLE
+        }
+    }
+});
+```
+
+
+
+(Update/PUT) Change personal profile picture
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      //For example say variable "newProfilePicture" is new pfp file variable
+      userObject.put("profilePicture", newProfilePicture);
+      userObject.saveInBackground();
+      
+    } else {
+      // something went wrong
+    }
+  }
+});
+```
+
+(Update/PUT) Change personal bio
+```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.getInBackground("---username-goes-here---", new GetCallback<ParseObject>() {
+  public void done(ParseObject userObject, ParseException e) {
+    if (e == null) {
+      //For example say variable "newBio" is new bio variable
+      userObject.put("bio", newBio);
+      userObject.saveInBackground();
+      
+    } else {
+      // something went wrong
+    }
+  }
+});
+```
+
+
+
+
+ Settings
+(Delete) Delete user profile and all their games played
+	```swift
+ParseQuery<ParseObject> query = ParseQuery.getQuery("users");
+query.whereEqualTo("username", "---username-goes-here---");
+query.findInBackground(new FindCallback<ParseObject>() {
+    public void done(List<ParseObject> userObject, ParseException e) {
+        if (e == null) {
+            userObject.deleteInBackground;
+        } else {
+            // ERROR, NEED TO HANDLE
+        }
+    }
+});
+	```
+
   
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
