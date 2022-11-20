@@ -8,12 +8,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".FastThumbsApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleTodo"
         tools:targetApi="31">
@@ -26,6 +27,14 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".PlayDailyActivity"
             android:exported="true"></activity>
@@ -49,6 +59,7 @@
         <!-- android:name=".MainActivity" -->
         <!-- android:exported="true"> -->
         <!-- </activity> -->
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.codepath.fileprovider"
