@@ -20,9 +20,9 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>) : /
     }
 
     override fun onBindViewHolder(holder: CarouselItemViewHolder, position: Int) {
-        val textView = holder.itemView.findViewById<TextView>(R.id.textView)
-//        textView.background = carouselDataList.values.elementAt(position) //The textView that is being bound contains a background xml element
-//        textView.text = carouselDataList.keys.elementAt(position)
+        val textView = holder.itemView.findViewById<TextView>(R.id.textview)
+        textView?.background = carouselDataList.values.elementAt(position) //The textView that is being bound contains a background xml element
+        textView?.text = carouselDataList.keys.elementAt(position)
     }
 
     override fun getItemCount(): Int {

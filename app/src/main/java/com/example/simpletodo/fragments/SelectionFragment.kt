@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,13 +73,15 @@ class SelectionFragment : Fragment() {
 //            "Movies",
 //            "Lyrics"
 //        )
-        var demoData = mapOf(
+        val demoData = mapOf(
             "Poetry" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.poerty, null) },
             "Movies" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.movie_clap, null) },
             "Lyrics" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.lyricspng, null) },
             "work" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.logo, null) }
 
             )
+
+        Log.i(TAG, demoData.keys.elementAt(1))
 
         viewPager.adapter = CarouselRVAdapter(demoData as Map<String, Drawable>)
 //        viewPager.adapter = CarouselRVAdapter(demoData as Map<String, Drawable>)
@@ -107,6 +110,10 @@ class SelectionFragment : Fragment() {
 
         context?.startActivity(intent)
 
+    }
+
+    companion object {
+        private const val TAG = "SelectionScreenMessages"
     }
 
 
