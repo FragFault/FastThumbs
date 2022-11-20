@@ -26,6 +26,11 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter></activity>
 
+        <activity
+            android:name=".PlayDailyActivity"
+            android:exported="true" >
+        </activity>
+
         <meta-data
             android:name="com.parse.SERVER_URL"
             android:value="@string/back4app_server_url" />
