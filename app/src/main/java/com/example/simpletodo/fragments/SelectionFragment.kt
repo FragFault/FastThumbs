@@ -44,14 +44,22 @@ class SelectionFragment : Fragment() {
 
         val ivDaily = view.findViewById<ImageView>(R.id.daily)
         val viewPager = view.findViewById<ViewPager2>(R.id.view_pager)
+        val page = view.findViewById<TextView>(R.id.textview)
 
         Glide.with(view.context).load(R.drawable.poerty).into(ivDaily)
 
+        //Set onClick Daily
         ivDaily.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, PlayDailyActivity::class.java)
 
             context?.startActivity(intent)
         })
+
+        //Set onClick  Switch
+        view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener {
+            isCometetive = !isCometetive
+            Toast.makeText(requireContext(), "Switced Modes $isCometetive", Toast.LENGTH_SHORT).show()
+        }
 
 
         viewPager.apply {
@@ -62,53 +70,26 @@ class SelectionFragment : Fragment() {
                 RecyclerView.OVER_SCROLL_NEVER // Remove the scroll effect
         }
 
-        //Set onclick
-        view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener {
-            isCometetive = !isCometetive
-            Toast.makeText(requireContext(), "Switced Modes $isCometetive", Toast.LENGTH_SHORT).show()
-        }
-
-//        val demoData = arrayListOf(
-//            "Poetry",
-//            "Movies",
-//            "Lyrics"
-//        )
         val demoData = mapOf(
             "Poetry" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.poerty, null) },
             "Movies" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.movie_clap, null) },
             "Lyrics" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.lyricspng, null) },
-            "work" to context?.let { ResourcesCompat.getDrawable(it.resources, R.drawable.logo, null) }
 
             )
 
-        Log.i(TAG, demoData.keys.elementAt(1))
+        viewPager.adapter = context?.let {
+            CarouselRVAdapter(demoData as Map<String, Drawable>,
+                it
+            )
+        }
 
-        viewPager.adapter = CarouselRVAdapter(demoData as Map<String, Drawable>)
-//        viewPager.adapter = CarouselRVAdapter(demoData as Map<String, Drawable>)
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer((40 * Resources.getSystem().displayMetrics.density).toInt()))
-//        compositePageTransformer.addTransformer { page, position ->
-//            val r = 1 - kotlin.math.abs(position)
-//            page.scaleY = (0.80f + r * 0.20f)
-//        }
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - kotlin.math.abs(position)
+            page.scaleY = (0.80f + r * 0.20f)
+        }
         viewPager.setPageTransformer(compositePageTransformer)
-
-
-    }
-
-
-    fun onClick(v: View?) {
-        //Get notified of movie being tapped on
-        //2. Use the intent system to navigate to the new activity
-        val intent = Intent(context, PlayDailyActivity::class.java)
-
-//            val options = makeSceneTransitionAnimation(
-//                context,
-//                (tvTitle as View?)!!, "profile"
-//            )
-//        intent.putExtra("MOVIE_EXTRA", movie)
-
-        context?.startActivity(intent)
 
     }
 
@@ -118,3 +99,4 @@ class SelectionFragment : Fragment() {
 
 
 }
+
