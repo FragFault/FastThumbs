@@ -19,6 +19,17 @@
         android:theme="@style/Theme.SimpleTodo"
         tools:targetApi="31">
         <activity
+            android:name=".PlayActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" >
+        </activity>
+        <activity
             android:name=".SignUpActivity"
             android:exported="true" >
         </activity>
@@ -32,6 +43,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".PlayDailyActivity"
+            android:exported="true"></activity>
+
         <meta-data
             android:name="com.parse.SERVER_URL"
             android:value="@string/back4app_server_url" />
@@ -40,11 +55,10 @@
             android:value="@string/back4app_app_id" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="@string/back4app_client_key" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:value="@string/back4app_client_key" /> <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- </activity> -->
 
         <provider
             android:name="androidx.core.content.FileProvider"
