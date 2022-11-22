@@ -396,5 +396,9 @@ query.findInBackground(new FindCallback<ParseObject>() {
 });
 ```
 
+Fast_Thumbs GIF
+<img src='https://github.com/FragFault/FastThumbs/blob/GIF_BRANCH/Project_Sprint1_1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 
