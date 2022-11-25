@@ -14,9 +14,9 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        if (ParseUser.getCurrentUser() != null) {
-            goToMainActivity()
-        }
+//        if (ParseUser.getCurrentUser() != null) {
+//            goToMainActivity()
+//        }
 
         findViewById<TextView>(R.id.login_button).setOnClickListener {
             goToLoginActivity()

@@ -8,12 +8,13 @@
     android:clipToPadding="false"
     >
 
+
     <TextView
         android:id="@+id/casualText"
         android:layout_width="68dp"
         android:layout_height="27dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="216dp"
         android:text="Casual"
         android:textSize="19dp"
         android:textStyle="bold"
@@ -24,36 +25,50 @@
         android:id="@+id/competetiveText"
         android:layout_width="115dp"
         android:layout_height="30dp"
-        android:layout_marginStart="260dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginStart="252dp"
+        android:layout_marginTop="216dp"
         android:text="Competetive"
         android:textSize="19dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/Text"
-        android:layout_width="148dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="64dp"
-        android:text="Let's Type!"
-        android:textSize="30dp"
-        android:textStyle="bold"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="300dp"
+
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="49dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Let's Type!"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </RelativeLayout>
 
     <Switch
         android:id="@+id/modeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="216dp"
         android:scaleX="2.5"
         android:scaleY="2.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/daily"
@@ -61,14 +76,13 @@
         android:layout_height="152dp"
         android:layout_marginStart="76dp"
         android:layout_marginEnd="76dp"
-        android:layout_marginBottom="306dp"
-        android:tint="#B0000000"
+        android:layout_marginBottom="336dp"
         android:contentDescription="TODO"
+        android:tint="#B0000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
 
     <TextView
         android:id="@+id/textView"
@@ -96,6 +110,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/daily"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="75dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="308dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
