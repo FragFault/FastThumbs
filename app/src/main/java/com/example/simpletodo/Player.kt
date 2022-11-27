@@ -35,11 +35,18 @@ class Player : ParseObject() {
         put(KEY_DESCRIPTION, name)
     }
 
+    fun getPoints(): Int? {
+        return getInt(KEY_POINTS)
+    }
+    fun setPoints(name: Int){
+        put(KEY_POINTS, name)
+    }
+
     companion object {
         const val KEY_DESCRIPTION = "bio"
-        const val KEY_IMAGE = "image"
         const val KEY_USER = "username"
         const val KEY_PROFILE = "profilePic"
         const val KEY_POSTED = "createdAt"
+        const val KEY_POINTS = "totalPoints"
     }
 }

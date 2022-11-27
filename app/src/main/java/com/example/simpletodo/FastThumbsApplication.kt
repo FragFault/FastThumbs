@@ -2,10 +2,13 @@ package com.example.simpletodo
 
 import android.app.Application
 import com.parse.Parse
+import com.parse.ParseObject
+import com.parse.ParseObject.registerSubclass
 
-class FastThumbsApplication : Application() {
+class   FastThumbsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        ParseObject.registerSubclass(Player::class.java)
         Parse.initialize(
             Parse.Configuration.Builder(this)
                 .applicationId(getString(R.string.back4app_app_id))

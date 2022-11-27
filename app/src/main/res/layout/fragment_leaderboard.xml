@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/firstplace"
         android:layout_width="82dp"
         android:layout_height="81dp"
         android:layout_marginTop="15dp"
@@ -36,7 +36,7 @@
         android:textColor="#46B5F3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/firstplace" />
 
     <TextView
         android:id="@+id/textView5"
@@ -54,7 +54,7 @@
         android:layout_height="81dp"
         android:layout_margin="30dp"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/firstplace"
         tools:src="@tools:sample/avatars" />
 
     <ImageView
@@ -64,7 +64,7 @@
         android:layout_margin="30dp"
         app:layout_constraintStart_toEndOf="@+id/textView5"
 
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/firstplace"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -108,6 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/BoardView"
         android:layout_width="409dp"
         android:layout_height="433dp"
         app:layout_constraintBottom_toBottomOf="parent"
