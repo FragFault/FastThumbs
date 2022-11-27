@@ -67,10 +67,12 @@
         app:layout_constraintTop_toTopOf="@+id/textView3"
         tools:ignore="MissingConstraints" />
 
+
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/darkModeSwitch"
         android:layout_width="50dp"
         android:layout_height="30dp"
+        android:checked="false"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="8dp"
         android:buttonTint="#03A9F4"
@@ -112,7 +114,7 @@
 
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/bugButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -210,6 +212,19 @@
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintHorizontal_bias="0.772"
         app:layout_constraintStart_toEndOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="146dp"
+        android:layout_marginTop="107dp"
+        android:layout_marginEnd="151dp"
+        android:backgroundTint="#303030"
+        android:text="Logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
