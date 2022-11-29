@@ -1,11 +1,16 @@
 package com.example.simpletodo.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simpletodo.BoardAdapter
 import com.example.simpletodo.R
+import com.example.simpletodo.SettingsActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,7 +32,16 @@ class UserProfileFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.findViewById<ImageButton>(R.id.settingsButton).setOnClickListener(View.OnClickListener {
+                val intent = Intent(context, SettingsActivity::class.java)
+                context?.startActivity(intent)
+            })
+
     }
 
     override fun onCreateView(
