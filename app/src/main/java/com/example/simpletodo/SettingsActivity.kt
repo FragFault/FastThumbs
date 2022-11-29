@@ -1,15 +1,21 @@
 package com.example.simpletodo
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.constraintlayout.widget.ConstraintSet.Constraint
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.example.simpletodo.fragments.UserProfileFragment
 import com.parse.ParseUser
 
 
@@ -20,7 +26,9 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        val fragmentManager: FragmentManager = supportFragmentManager
         val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
+        val settingsPage = findViewById<View>(R.id.SettingsPage)
 
         findViewById<Switch>(R.id.darkModeSwitch).setOnClickListener {
             var modeSwitchState = modeSwitch.isChecked
@@ -33,6 +41,13 @@ class SettingsActivity : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.bugButton).setOnClickListener {
             sendBug()
+        }
+
+        findViewById<ImageButton>(R.id.goBack).setOnClickListener {
+
+//            var fragmentToShow = UserProfileFragment()
+//            fragmentManager.beginTransaction().replace(R.id.flContainer, fragmentToShow).commit()/
+            this.onBackPressed()
         }
     }
 
