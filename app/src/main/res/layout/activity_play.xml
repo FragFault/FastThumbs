@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlayActivity">
 
-    <Button
-        android:id="@+id/button2"
+    <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play Category"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="295dp"
-        tools:ignore="MissingConstraints" />
+        android:text="GET TYPING"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/tvTimeLeft"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTimeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="59 SECONDS LEFT"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvErrors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <TextView
+        android:id="@+id/tvErrors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# INCORRECT: 5"
+        android:textColor="#FF0000"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@+id/tvPrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="350dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra, nibh eget varius efficitur, enim est aliquet nunc, at pretium est nisl quis purus. Vivamus elementum lacus nibh. Praesent tristique blandit metus, vel mollis nisi mattis quis. Pellentesque luctus felis mauris. Integer ante felis, pretium ac mauris placerat, scelerisque sagittis purus. Quisque tempus lorem odio, at viverra lectus vulputate ac. Mauris tempor pellentesque dolor, sit amet consequat mauris tincidunt non. Suspendisse luctus consequat lorem, at laoreet risus molestie id.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra, nibh eget varius efficitur, enim est aliquet nunc, at pretium est nisl quis purus. Vivamus elementum lacus nibh. Praesent tristique blandit metus, vel mollis nisi mattis quis. Pellentesque luctus felis mauris. Integer ante felis, pretium ac mauris placerat, scelerisque sagittis purus. Quisque tempus lorem odio, at viverra lectus vulputate ac. Mauris tempor pellentesque dolor, sit amet consequat mauris tincidunt non. Suspendisse luctus consequat lorem, at laoreet risus molestie id."
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvErrors"
+        app:layout_constraintBottom_toBottomOf="@id/bttnKeyboardReturn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/bttnKeyboardReturn"
+        android:onClick="bringBackKeyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="203dp"
+        android:text="Bring Keyboard Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrompt" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
