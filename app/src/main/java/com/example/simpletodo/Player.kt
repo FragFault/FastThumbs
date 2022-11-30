@@ -1,13 +1,8 @@
 package com.example.simpletodo
 
-import android.provider.Settings.Secure.getString
-import android.text.method.DateTimeKeyListener
-import android.widget.TextView
 import com.parse.ParseClassName
 import com.parse.ParseFile
 import com.parse.ParseObject
-import com.parse.ParseUser
-import java.util.Date
 
 @ParseClassName("User")
 class Player : ParseObject() {
