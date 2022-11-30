@@ -403,3 +403,9 @@ query.findInBackground(new FindCallback<ParseObject>() {
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 
+## Fast_Thumbs GIF SPRINT 2
+
+<img src='https://github.com/FragFault/FastThumbs/blob/GIF_BRANCH/Project_Sprint2_1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
