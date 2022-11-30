@@ -2,20 +2,22 @@ package com.example.simpletodo.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.simpletodo.BoardAdapter
 import com.example.simpletodo.R
 import com.example.simpletodo.SettingsActivity
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.parse.ParseUser
+import com.parse.*
 
 /**
  * A simple [Fragment] subclass.
@@ -23,26 +25,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class UserProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    val PICK_PHOTO_CODE = 1046
 
-        }
-    }
+    lateinit var profilePic: ImageView
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.findViewById<ImageButton>(R.id.settingsButton).setOnClickListener(View.OnClickListener {
-                val intent = Intent(context, SettingsActivity::class.java)
-                context?.startActivity(intent)
-            })
+    val photoFileName = "pfp.jpg"
 
-    }
+    lateinit var user: ParseUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,23 +42,54 @@ class UserProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_user_profile, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.findViewById<ImageButton>(R.id.settingsButton)
+            .setOnClickListener(View.OnClickListener {
+                val intent = Intent(context, SettingsActivity::class.java)
+                context?.startActivity(intent)
+            })
+
+        super.onViewCreated(view, savedInstanceState)
+
+        user = ParseUser.getCurrentUser()
+
+        view.findViewById<TextView>(R.id.username).text = user.username
+
+        profilePic = view.findViewById(R.id.profilePic)
+        if (user.getParseFile(KEY_PFP) != null) {
+            Glide.with(requireContext())
+                .load(user.getParseFile(KEY_PFP)?.url)
+                .transform(CircleCrop())
+                .into(profilePic)
+        } else {
+            Glide.with(requireContext())
+                .load(R.drawable.user_filled_24)
+                .transform(CircleCrop())
+                .into(profilePic)
+        }
+
+        profilePic.setOnClickListener {
+            onPickPhoto()
+        }
+    }
+
+    fun onPickPhoto() {
+        // Create intent for picking a photo from the gallery
+        val intent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, PICK_PHOTO_CODE)
+        }
+    }
+
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+            const val KEY_PFP = "profilePic"
     }
 }
