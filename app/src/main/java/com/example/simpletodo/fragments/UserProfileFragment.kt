@@ -3,21 +3,20 @@ package com.example.simpletodo.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.example.simpletodo.BoardAdapter
+import com.example.simpletodo.Player
 import com.example.simpletodo.R
 import com.example.simpletodo.SettingsActivity
 import com.parse.ParseUser
 import com.parse.*
+import android.widget.Toast
 
 /**
  * A simple [Fragment] subclass.
@@ -29,10 +28,15 @@ class UserProfileFragment : Fragment() {
     val PICK_PHOTO_CODE = 1046
 
     lateinit var profilePic: ImageView
+    lateinit var username: TextView
+    lateinit var bio: EditText
+    lateinit var averageSpeed: TextView
+    lateinit var averageAcc: TextView
+    lateinit var totalPoints: TextView
 
     val photoFileName = "pfp.jpg"
 
-    lateinit var user: ParseUser
+    lateinit var player: ParseUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,22 +55,36 @@ class UserProfileFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        user = ParseUser.getCurrentUser()
+        val query: ParseQuery<Player> = ParseQuery.getQuery(Player::class.java)
+        query.findInBackground(object : FindCallback<Player> {
+            fun done(player: Player, e: ParseException?) {
+                if (e != null) {
+                    val username = player.getUsername()
+                    val profilePic = player.getPImage()
+                    val bio = player.getBio()
+                    val totalPoints = player.getPoints()
+                    val averageAccuracy = player.getAcc()
+                    val averageSpeed = player.getSpeed()
 
-        view.findViewById<TextView>(R.id.username).text = user.username
+                // query for last 3 played games
 
+                }
+            }
+
+            override fun done(objects: MutableList<Player>?, e: ParseException?) {
+                if (e != null) {
+                    Log.e(TAG, "Error fetching posts")
+
+                } }
+
+        })
         profilePic = view.findViewById(R.id.profilePic)
-        if (user.getParseFile(KEY_PFP) != null) {
-            Glide.with(requireContext())
-                .load(user.getParseFile(KEY_PFP)?.url)
-                .transform(CircleCrop())
-                .into(profilePic)
-        } else {
-            Glide.with(requireContext())
-                .load(R.drawable.user_filled_24)
-                .transform(CircleCrop())
-                .into(profilePic)
-        }
+        username = view.findViewById(R.id.username)
+        bio = view.findViewById(R.id.bio)
+        totalPoints = view.findViewById(R.id.userPointsTotal)
+        averageSpeed = view.findViewById(R.id.userSpeed)
+        averageAcc = view.findViewById(R.id.userAcc)
+
 
         profilePic.setOnClickListener {
             onPickPhoto()
@@ -88,8 +106,8 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-
     companion object {
             const val KEY_PFP = "profilePic"
+        private const val TAG = "ProfileFragment"
     }
 }

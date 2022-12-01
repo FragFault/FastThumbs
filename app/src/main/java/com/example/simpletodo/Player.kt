@@ -9,14 +9,14 @@ import com.parse.ParseObject
 import com.parse.ParseUser
 import java.util.Date
 
-@ParseClassName("User")
+@ParseClassName("Players")
 class Player : ParseObject() {
     fun getUsername(): String? {
         return getString(KEY_USER)
     }
 
-    fun setUsername(name: String){
-        put(KEY_USER, name)
+    fun setUsername(username: String){
+        put(KEY_USER, username)
     }
 
     fun getPImage(): ParseFile? {
@@ -31,22 +31,37 @@ class Player : ParseObject() {
         return getString(KEY_DESCRIPTION)
     }
 
-    fun setBio(name: String){
-        put(KEY_DESCRIPTION, name)
+    fun setBio(bio: String){
+        put(KEY_DESCRIPTION, bio)
     }
 
     fun getPoints(): Int? {
         return getInt(KEY_POINTS)
     }
-    fun setPoints(name: Int){
-        put(KEY_POINTS, name)
+    fun setPoints(points: Int){
+        put(KEY_POINTS, points)
     }
+
+    fun getAcc(): Int? {
+        return getInt(KEY_Acc)
+    }
+    fun setAcc(acc: Int){
+        put(KEY_Acc, acc)
+    }
+    fun getSpeed(): Int? {
+        return getInt(KEY_Speed)
+    }
+    fun setSpeed(speed: Int){
+        put(KEY_Speed, speed)
+    }
+
 
     companion object {
         const val KEY_DESCRIPTION = "bio"
         const val KEY_USER = "username"
         const val KEY_PROFILE = "profilePic"
-        const val KEY_POSTED = "createdAt"
         const val KEY_POINTS = "totalPoints"
+        const val KEY_Acc = "averageAcc"
+        const val KEY_Speed = "averageSpeed"
     }
 }
