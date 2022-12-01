@@ -68,24 +68,6 @@ class SettingsActivity : AppCompatActivity() {
         contactPopupView.findViewById<Button>(R.id.button2).setOnClickListener {
             val query: ParseQuery<Player> = ParseQuery.getQuery(Player::class.java)
 
-//            ParseUser.logOutInBackground { e ->
-//                if (e == null) {
-//                } else {
-//                    e.printStackTrace()
-//                }
-//            }
-//
-//            ParseUser.getCurrentUser().deleteInBackground{ e ->
-//                if (e == null) {
-//                    // if the error is not null then we are displaying a toast message and opening our home activity.
-//                    Toast.makeText(this@SettingsActivity, "Account Deleted", Toast.LENGTH_SHORT).show()
-//                    val i = Intent(this@SettingsActivity, SignUpActivity::class.java)
-//                    startActivity(i)
-//                } else {
-//                    // if we get error we are displaying it in below line.
-//                    Toast.makeText(this@SettingsActivity, "Fail to delete account", Toast.LENGTH_SHORT).show()
-//                }
-//            }
 
 //            query.whereEqualTo("user", Player.KEY_USER)
             query.include(Player.KEY_USER)
@@ -96,13 +78,28 @@ class SettingsActivity : AppCompatActivity() {
 
                     } else {
                         if (objects != null){
-                            Log.e("yo:",objects.size.toString())
-                            Log.i("Test: ", "Parse User: " +  ParseUser.getCurrentUser() as String)
+//                            Log.e("yo:",objects.size.toString())
+                            Log.e("yo: ", "Current User: " +  ParseUser.getCurrentUser().email.toString())
                             for (player in objects){
-                                Log.i("Test: ", "Player list User: " +  player.getUser() as String)
-//                                if (player.getUser() == ParseUser.getCurrentUser()){
-//                                    Log.i("Settings: ", player.getAccuracy() as String)
-//                                }
+                                Log.i("yo: ", "Object User: " + player.getUser()?.email.toString())
+                                if (player.getUser()?.email == ParseUser.getCurrentUser().email){
+                                    Toast.makeText(this@SettingsActivity, "We did it. Its gone", Toast.LENGTH_SHORT).show()
+
+                                    player.delete()
+
+                                    ParseUser.getCurrentUser().deleteInBackground{ e ->
+                                        if (e == null) {
+                                            // if the error is not null then we are displaying a toast message and opening our home activity.
+                                            Toast.makeText(this@SettingsActivity, "Account Deleted", Toast.LENGTH_SHORT).show()
+                                            ParseUser.logOut()
+                                            val i = Intent(this@SettingsActivity, SignUpActivity::class.java)
+                                            startActivity(i)
+                                        } else {
+                                            // if we get error we are displaying it in below line.
+                                            Toast.makeText(this@SettingsActivity, "Fail to delete account", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
                             }
 
                         }else{
