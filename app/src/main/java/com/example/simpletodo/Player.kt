@@ -3,45 +3,65 @@ package com.example.simpletodo
 import com.parse.ParseClassName
 import com.parse.ParseFile
 import com.parse.ParseObject
+import com.parse.ParseUser
 
-@ParseClassName("User")
+@ParseClassName("Players")
 class Player : ParseObject() {
-    fun getUsername(): String? {
-        return getString(KEY_USER)
+    fun getUser(): ParseUser? {
+        return getParseUser(KEY_USER)
     }
 
-    fun setUsername(name: String){
-        put(KEY_USER, name)
+    fun setUser(user: ParseUser){
+        put(KEY_USER, user)
     }
 
     fun getPImage(): ParseFile? {
-        return getParseFile(KEY_PROFILE)
+        return getParseFile(KEY_IMAGE)
     }
 
     fun setPImage(parsefile: ParseFile) {
-        put(KEY_PROFILE, parsefile)
+        put(KEY_IMAGE, parsefile)
+    }
+
+
+    fun getAccuracy(): Number? {
+        return getNumber(KEY_ACCURACY)
+    }
+
+    fun setAccuracy(Accuracy: Number){
+        put(KEY_ACCURACY, Accuracy)
+    }
+
+    fun getTotal(): Number? {
+        return getNumber(KEY_TOTAL)
+    }
+
+    fun setTotal(points: Number){
+        put(KEY_TOTAL, points)
     }
 
     fun getBio(): String? {
-        return getString(KEY_DESCRIPTION)
+        return getString(KEY_BIO)
     }
 
-    fun setBio(name: String){
-        put(KEY_DESCRIPTION, name)
+    fun setBio(bio: String){
+        put(KEY_BIO, bio)
     }
 
-    fun getPoints(): Int? {
-        return getInt(KEY_POINTS)
+    fun getGamesPlayed(): Number? {
+        return getNumber(KEY_GAMES)
     }
-    fun setPoints(name: Int){
-        put(KEY_POINTS, name)
+
+    fun setGamesPlayed(games: Number){
+        put(KEY_GAMES, games)
     }
 
     companion object {
-        const val KEY_DESCRIPTION = "bio"
-        const val KEY_USER = "username"
-        const val KEY_PROFILE = "profilePic"
-        const val KEY_POSTED = "createdAt"
-        const val KEY_POINTS = "totalPoints"
+        const val KEY_USER = "user"
+        const val KEY_IMAGE = "profilePic"
+        const val KEY_ACCURACY = "averageAcc"
+        const val KEY_TOTAL = "totalPoints"
+        const val KEY_BIO = "bio"
+        const val KEY_GAMES = "gamesPlayed"
     }
 }

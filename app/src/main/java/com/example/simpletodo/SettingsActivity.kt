@@ -3,6 +3,7 @@ package com.example.simpletodo
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -67,32 +68,52 @@ class SettingsActivity : AppCompatActivity() {
         contactPopupView.findViewById<Button>(R.id.button2).setOnClickListener {
             val query: ParseQuery<Player> = ParseQuery.getQuery(Player::class.java)
 
-            query.whereEqualTo("username", ParseUser.getCurrentUser().username as String)
+//            ParseUser.logOutInBackground { e ->
+//                if (e == null) {
+//                } else {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            ParseUser.getCurrentUser().deleteInBackground{ e ->
+//                if (e == null) {
+//                    // if the error is not null then we are displaying a toast message and opening our home activity.
+//                    Toast.makeText(this@SettingsActivity, "Account Deleted", Toast.LENGTH_SHORT).show()
+//                    val i = Intent(this@SettingsActivity, SignUpActivity::class.java)
+//                    startActivity(i)
+//                } else {
+//                    // if we get error we are displaying it in below line.
+//                    Toast.makeText(this@SettingsActivity, "Fail to delete account", Toast.LENGTH_SHORT).show()
+//                }
+//            }
 
+//            query.whereEqualTo("user", Player.KEY_USER)
+            query.include(Player.KEY_USER)
             query.findInBackground(object : FindCallback<Player> {
                 override fun done(objects: MutableList<Player>?, e: ParseException?) {
-                    if (e == null) {
-                        // on below line we are getting the first course and
-                        // calling a delete method to delete this course.
-                        objects?.get(0)?.deleteInBackground { e ->
-                            // inside done method checking if the error is null or not.
-                            if (e == null) {
-                                // if the error is not null then we are displaying a toast message and opening our home activity.
-                                Toast.makeText(this@SettingsActivity, "Account Deleted", Toast.LENGTH_SHORT).show()
-                                val i = Intent(this@SettingsActivity, SignUpActivity::class.java)
-                                startActivity(i)
-                            } else {
-                                // if we get error we are displaying it in below line.
-                                Toast.makeText(this@SettingsActivity, "Fail to delete account", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                    if (e != null) {
+                        Log.e("SettingsFragment:","Error fetching users")
+
                     } else {
-                        // if we don't get the data in our database then we are displaying below message.
-                        Toast.makeText(
-                            this@SettingsActivity,
-                            "Fail to get the object..",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (objects != null){
+                            Log.e("yo:",objects.size.toString())
+                            Log.i("Test: ", "Parse User: " +  ParseUser.getCurrentUser() as String)
+                            for (player in objects){
+                                Log.i("Test: ", "Player list User: " +  player.getUser() as String)
+//                                if (player.getUser() == ParseUser.getCurrentUser()){
+//                                    Log.i("Settings: ", player.getAccuracy() as String)
+//                                }
+                            }
+
+                        }else{
+                            // if we don't get the data in our database then we are displaying below message.
+                            Toast.makeText(
+                                this@SettingsActivity,
+                                "Fail to get the object..",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
                     }
                 }
             })
