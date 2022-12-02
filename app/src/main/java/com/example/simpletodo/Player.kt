@@ -58,7 +58,7 @@ class Player : ParseObject() {
 
     companion object {
         const val KEY_DESCRIPTION = "bio"
-        const val KEY_USER = "username"
+        const val KEY_USER = "user"
         const val KEY_PROFILE = "profilePic"
         const val KEY_POINTS = "totalPoints"
         const val KEY_Acc = "averageAcc"
