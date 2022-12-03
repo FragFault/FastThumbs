@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.parse.ParseUser
 
 class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardAdapter.ViewHolder {
@@ -39,8 +40,8 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
 
         fun bind(player: Player,index: Int){
             rank.text = index.toString()
-            boardUsername.text = player.getUsername()
-            points.text = player.getPoints().toString()+" Pts"
+            boardUsername.text = player.getUser()?.username as String
+            points.text = player.getTotal().toString()+" Pts"
             Glide.with(itemView.context).load(player.getPImage()?.url).into(image)
         }
     }
