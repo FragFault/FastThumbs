@@ -203,7 +203,7 @@
             tools:ignore="MissingConstraints" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/notify_switch"
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginStart="32dp"

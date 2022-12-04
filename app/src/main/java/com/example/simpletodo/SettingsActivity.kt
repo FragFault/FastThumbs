@@ -1,9 +1,13 @@
 package com.example.simpletodo
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -14,26 +18,53 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
-import com.parse.*
+import com.parse.FindCallback
+import com.parse.ParseException
+import com.parse.ParseQuery
+import com.parse.ParseUser
+import java.util.*
 
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity() : AppCompatActivity() {
 
 //    private var dialogBuilder: AlertDialog.Builder? = null
 //    lateinit var dialog: AlertDialog
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        createNotificationChannel()
+
         val fragmentManager: FragmentManager = supportFragmentManager
         val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
         val settingsPage = findViewById<View>(R.id.SettingsPage)
 
+        //        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setSmallIcon(R.drawable.logo)
+//            .setContentTitle("FastThumbs")
+//            .setContentText("You have yet to complete the Daily Challenge")
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
         findViewById<ImageButton>(R.id.deleteButton).setOnClickListener {
             createNewContactDialog()
         }
+
+        findViewById<Switch>(R.id.notify_switch).setOnClickListener {
+            Toast.makeText(this, "Reminder Set!", Toast.LENGTH_SHORT).show()
+            val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+            val timeAtButtonClick = System.currentTimeMillis();
+            val tenSecondsInMillis = 1000 * 3;
+
+            val intent = Intent(this@SettingsActivity, ReminderBroadcast::class.java)
+            val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this@SettingsActivity, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + tenSecondsInMillis, pendingIntent)
+        }
+
 
         findViewById<Switch>(R.id.darkModeSwitch).setOnClickListener {
             var modeSwitchState = modeSwitch.isChecked
@@ -52,6 +83,8 @@ class SettingsActivity : AppCompatActivity() {
 
 //            var fragmentToShow = UserProfileFragment()
 //            fragmentManager.beginTransaction().replace(R.id.flContainer, fragmentToShow).commit()/
+
+
             this.onBackPressed()
         }
     }
@@ -160,7 +193,22 @@ class SettingsActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, "Choose Client"))
     }
 
+    private  fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name: CharSequence = "MyNotification"
+            val description = "My notification channel description"
 
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val notificationChannel = NotificationChannel(SettingsActivity.CHANNEL_ID, name, importance)
+            notificationChannel.description = description
+            val notificationManager = getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+    }
+
+    private companion object{
+        private const val CHANNEL_ID = "channel01"
+    }
 
 
 }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +21,6 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.example.simpletodo.LoginActivity.Companion.TAG
-import com.example.simpletodo.PlayDailyActivity
-import com.example.simpletodo.Player
 import com.example.simpletodo.R
 import com.example.simpletodo.ResultActivity
 import com.parse.*
@@ -76,6 +73,7 @@ class SelectionFragment : Fragment() {
 
         titleView.text = titleString + " " + player + "!"
         ivDaily.setOnClickListener(View.OnClickListener {
+
             val intent = Intent(context, ResultActivity::class.java)
 
             context?.startActivity(intent)

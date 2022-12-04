@@ -1,16 +1,23 @@
 package com.example.simpletodo
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Switch
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.simpletodo.fragments.LeaderboardFragment
 import com.example.simpletodo.fragments.UserProfileFragment
 import com.example.simpletodo.fragments.SelectionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.text.SimpleDateFormat
+import java.util.*
 
 open class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -18,7 +25,9 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val fragmentManager: FragmentManager = supportFragmentManager
+
 
         findViewById<BottomNavigationView>(R.id.bottom_navigation).setOnItemSelectedListener {
                 item ->
@@ -50,4 +59,6 @@ open class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.action_home
 
     }
+
+
 }
