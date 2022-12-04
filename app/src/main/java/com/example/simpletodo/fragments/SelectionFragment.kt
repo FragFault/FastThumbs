@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,6 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -21,13 +21,21 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.codepath.asynchttpclient.AsyncHttpClient
+import com.codepath.asynchttpclient.RequestParams
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
 import com.example.simpletodo.R
 import com.example.simpletodo.ResultActivity
-import com.parse.*
+import com.parse.ParseUser
+import org.json.JSONException
 
 
 class SelectionFragment : Fragment() {
     // initiate a Switch
+    private val LYRICS_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
+    private val POETRY_URL = "https://52/.87/.203/.225/api/getPoetryPrompt"
+    private val MOVIE_URL =  "http://52.87.203.225/api/getMoviePrompt"
 
     // TODO: Rename and change types of parameters
     var isCometetive: Boolean = false
@@ -35,12 +43,9 @@ class SelectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        queryPlayer()
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_selection, container, false)
     }
-
-
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,20 +59,8 @@ class SelectionFragment : Fragment() {
 //        val ivPic = view.findViewById<ImageView>(R.id.ivProfileImage)
 
         Glide.with(view.context).load(R.drawable.poerty).into(ivDaily) //Load pic into daily challenge
-//
-//        val query: ParseQuery<Player> = ParseQuery.getQuery(Player::class.java)
-//        //Find all the post objects in our server
-//        query.include(Player.KEY_USER)
-//        query.include(Player.KEY_PROFILE)
-//        query.include(Player.KEY_DESCRIPTION)
+
         val player = ParseUser.getCurrentUser().username as String
-//
-//        val pfp = query.get(ParseUser.getCurrentUser().objectId).getPImage()
-////        val bio = ParseUser.getCurrentUser().ge
-//
-//        Glide.with(view.context).load(pfp).into(ivPic)
-//        Log.i(TAG, "Bio: $bio")
-        //Set onClick Daily
 
         val titleString = "Let's Type"
 
@@ -119,9 +112,12 @@ class SelectionFragment : Fragment() {
     }
 
 
+
+
     companion object {
-        private const val TAG = "SelectionScreenMessages"
+        const val TAG = "SelectionScreenMessages"
     }
+
 
 
 }

@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1") //Added Motion Layout Elijah
 //    implementation("androidx.core:core-ktx:$core_version") //Added Notification Dependency Elijah
     implementation 'com.synnapps:carouselview:0.1.5'
+    implementation 'com.codepath.libraries:asynchttpclient:2.1.1'
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
     implementation 'jp.co.cyberagent.android:gpuimage:2.0.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'

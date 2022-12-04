@@ -36,8 +36,6 @@ class SettingsActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        createNotificationChannel()
-
         val fragmentManager: FragmentManager = supportFragmentManager
         val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
         val settingsPage = findViewById<View>(R.id.SettingsPage)
@@ -57,12 +55,12 @@ class SettingsActivity() : AppCompatActivity() {
             val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
             val timeAtButtonClick = System.currentTimeMillis();
-            val tenSecondsInMillis = 1000 * 3;
+            val tenSecondsInMillis = 1000 * 15;
 
             val intent = Intent(this@SettingsActivity, ReminderBroadcast::class.java)
             val pendingIntent: PendingIntent = PendingIntent.getBroadcast(this@SettingsActivity, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-            alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + tenSecondsInMillis, pendingIntent)
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + AlarmManager.INTERVAL_HALF_HOUR, pendingIntent)
         }
 
 
@@ -193,22 +191,6 @@ class SettingsActivity() : AppCompatActivity() {
         startActivity(Intent.createChooser(intent, "Choose Client"))
     }
 
-    private  fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val name: CharSequence = "MyNotification"
-            val description = "My notification channel description"
-
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val notificationChannel = NotificationChannel(SettingsActivity.CHANNEL_ID, name, importance)
-            notificationChannel.description = description
-            val notificationManager = getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-    }
-
-    private companion object{
-        private const val CHANNEL_ID = "channel01"
-    }
 
 
 }

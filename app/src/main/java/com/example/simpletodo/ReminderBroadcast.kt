@@ -25,6 +25,7 @@ class ReminderBroadcast: BroadcastReceiver() {
             if (builder != null) {
                 notificationManager.notify(200, builder.build())
             }
+
         }
     }
 
