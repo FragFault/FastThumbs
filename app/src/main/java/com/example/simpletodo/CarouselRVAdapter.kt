@@ -74,6 +74,7 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
                     val theString =  prompt.getString("overview")
                     Log.i(SelectionFragment.TAG, "The prompt: $theString")
 
+                    //Add Data to Play Activity
                     val intent = Intent(context, PlayActivity::class.java)
                     intent.putExtra("prompt", theString);
                     context.startActivity(intent)

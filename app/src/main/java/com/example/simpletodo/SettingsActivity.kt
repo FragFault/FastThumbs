@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -50,7 +51,7 @@ class SettingsActivity() : AppCompatActivity() {
             createNewContactDialog()
         }
 
-        findViewById<Switch>(R.id.notify_switch).setOnClickListener {
+        findViewById<Button>(R.id.notify_switch).setOnClickListener {
             Toast.makeText(this, "Reminder Set!", Toast.LENGTH_SHORT).show()
             val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
@@ -179,16 +180,24 @@ class SettingsActivity() : AppCompatActivity() {
 
     private fun sendBug(){ //FUNCTIONAL????
 
-        val recipient = "example@gmail.com"
+        val recipient = "Whatzituya2@gmail.com"
+        val addresses = recipient.split(",".toRegex()).toTypedArray()
         val subject = "Bug Report"
+        val message = "Hi, theres seems to be an issue with FastThumbs."
 
         val intent: Intent = Intent(Intent.ACTION_SEND)
-        intent.putExtra(Intent.EXTRA_EMAIL, recipient)
+//            data = Uri.parse("emailto:")
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        intent.putExtra(Intent.EXTRA_TEXT, message)
+
+
 
         intent.type = "message/rfc822"
+        if(intent.resolveActivity(packageManager) != null){
+            startActivity(Intent.createChooser(intent, "Choose Client"))
+        }
 
-        startActivity(Intent.createChooser(intent, "Choose Client"))
     }
 
 
