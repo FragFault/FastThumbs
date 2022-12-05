@@ -6,6 +6,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,13 +16,16 @@ import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.example.simpletodo.Player
-import com.example.simpletodo.R
-import com.example.simpletodo.SettingsActivity
 import com.parse.ParseUser
 import com.parse.*
 import android.widget.Toast
-import com.example.simpletodo.GameLog
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.simpletodo.*
+import com.example.simpletodo.R
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 
 /**
@@ -40,6 +44,10 @@ class UserProfileFragment : Fragment() {
     lateinit var averageAcc: TextView
     lateinit var totalPoints: TextView
     lateinit var user : ParseUser
+    lateinit var GameLogRecyclerView: RecyclerView
+    lateinit var adapter: GameLogAdapter
+    var allGameLogs: MutableList<GameResults> = mutableListOf()
+
 
     val photoFileName = "pfp.jpg"
 
@@ -62,52 +70,21 @@ class UserProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         user = ParseUser.getCurrentUser()
 
-//        val query: ParseQuery<Player> = ParseQuery.getQuery(Player::class.java)
-//        query.include(Player.KEY_USER)
-//        query.whereEqualTo(Player.KEY_USER, user.objectId)
-//        query.findInBackground(object : FindCallback<Player> {
-//                        override fun done(objects: MutableList<Player>?, e: ParseException?) {
-//                if (e == null) {
-////                    Log.e(TAG, "Error fetching posts in if")
-//
-//                    if (objects != null) {
-//                        for (player in objects) {
-//                            Log.d("LeaderboardFragment:","Player:"+player.getUsername()!!)
-//                            val username = player.getUsername()
-//                            val profilePic = player.getPImage()
-//                            val bio = player.getBio()
-//                            val totalPoints = player.getPoints()
-//                            val averageAccuracy = player.getAcc()
-//                            val averageSpeed = player.getSpeed()
-//                        }
-//                    }
-//                } else {
-//                    if (objects != null) {
-//                    Log.e(TAG, "Error fetching posts in else")
-//                        for (player in objects) {
-////                            Log.i("LeaderboardFragment:","Player:"+player.getUsername()!!)
-////                            val username = player.getUsername()
-////                            val profilePic = player.getPImage()
-////                            val bio = player.getBio()
-////                            val totalPoints = player.getPoints()
-////                            val averageAccuracy = player.getAcc()
-////                            val averageSpeed = player.getSpeed()
-//                        }
-//
-//
-//                    }}
-//                        }
-//
-//
-//        })
         profilePic = view.findViewById(R.id.profilePic)
         username = view.findViewById(R.id.username)
         bio = view.findViewById(R.id.bio)
         totalPoints = view.findViewById(R.id.userPointsTotal)
         averageSpeed = view.findViewById(R.id.userSpeed)
         averageAcc = view.findViewById(R.id.userAcc)
+        GameLogRecyclerView = view.findViewById(R.id.gamedetails)
+        adapter = GameLogAdapter(requireContext(),allGameLogs)
+        GameLogRecyclerView.adapter = adapter
+        GameLogRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
         Log.d(TAG, user.objectId)
         profiledetails()
+        queryGameLogs()
 
 
         profilePic.setOnClickListener {
@@ -121,53 +98,61 @@ class UserProfileFragment : Fragment() {
         query.whereEqualTo(Player.KEY_USER, user)
         query.findInBackground { detail , e ->
             if (e == null) {
-                Log.d(Companion.TAG, "Objects: $detail")
+                Log.d(TAG, "Objects: $detail")
                 for (element in detail) {
                     Log.i(TAG, "this is the bio" + element.getBio().toString())
                     element.getBio()
 
                     username.setText(user.username.toString())
-//                     profilePic.setImageURI(loadFromUri(element.getPImage()))
+                    if (element.getPImage() != null) {
+                        Glide.with(requireContext())
+                            .load(element.getPImage()?.url)
+                            .transform(CircleCrop())
+                            .into(profilePic)
+                    } else {
+                        Glide.with(requireContext())
+                            .load(R.drawable.instagram_user_filled_24)
+                            .transform(CircleCrop())
+                            .into(profilePic)
+                    }
                     bio.setText(element.getBio()).toString()
                     totalPoints.setText(element.getPoints().toString())
-                    averageAcc.setText(element.getAcc().toString())
-                    averageSpeed.setText(element.getSpeed().toString())
+                    averageAcc.setText(element.getAcc().toString()+"%")
+                    averageSpeed.setText(element.getSpeed().toString()+" WPM")
 
                 }
             } else {
-                Log.e(Companion.TAG, "Parse Error: ", e)
+                Log.e(TAG, "Parse Error: ", e)
             }
         }
         Log.e(TAG, "This works")
 
     }
 
-//    fun gamedetails() {
-//        val query = ParseQuery.getQuery(GameLog::class.java)
-//        query.include(GameLog.KEY_USER)
-//        query.whereEqualTo(GameLog.KEY_USER, user.objectId)
-//        query.findInBackground { detail, e ->
-//            if (e == null) {
-//                Log.d(TAG, "Objects: $detail")
-//                for (element in detail) {
+    fun queryGameLogs(){
+        val query = ParseQuery.getQuery(GameResults::class.java)
+        query.include(GameResults.KEY_USER)
+        query.whereEqualTo(GameResults.KEY_USER, user)
+        query.findInBackground{ detail, e ->
+            if (e == null) {
+                Log.d(TAG, "Objects: $detail")
+                for (element in detail) {
 //                    Log.i(TAG, "this is the bio" + element.getDate().toString())
-//
-////                     profilePic.setImageURI(loadFromUri(element.getPImage()))
-//                    bio.setText(element.getDate()).toString()
-//                    totalPoints.setText(element.getPoints().toString())
-//                    averageAcc.setText(element.getAcc().toString())
-//                    averageSpeed.setText(element.getSpeed().toString())
-//
-//                }
-//            } else {
-//                Log.e(Companion.TAG, "Parse Error: ", e)
-//            }
-//        }
-//        Log.e(TAG, "This works")
-//    }
+
+                    allGameLogs.addAll(detail)
+                    adapter.notifyDataSetChanged()
+                }
+            }else {
+                        Log.i("Fragment:","GameLog is null")
+                    }
+                }
 
 
-        fun loadFromUri(photoUri: Uri?): Bitmap? {
+        }
+
+
+
+    fun loadFromUri(photoUri: Uri?): Bitmap? {
         var image: Bitmap? = null
         try {
             // check version of Android on device
@@ -199,6 +184,70 @@ class UserProfileFragment : Fragment() {
             // Bring up gallery to select a photo
             startActivityForResult(intent, PICK_PHOTO_CODE)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (data != null && requestCode == PICK_PHOTO_CODE) {
+            val photoUri: Uri? = data.data
+
+            // Load the image located at photoUri into selectedImage
+            val selectedImage = loadFromUri(photoUri)
+
+            // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
+            val resizedBitmap = BitmapScaler.scaleToFitWidth(selectedImage!!, profilePic.measuredWidth)
+            // Configure byte output stream
+            val bytes = ByteArrayOutputStream()
+            // Compress the image further
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes)
+            // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+            val resizedFile = getPhotoFileUri(photoFileName + "_resized")
+            resizedFile.createNewFile()
+            val fos = FileOutputStream(resizedFile)
+            // Write the bytes of the bitmap to file
+            fos.write(bytes.toByteArray())
+            fos.close()
+
+            if (photoUri != null) {
+                user.put(KEY_PFP, ParseFile(resizedFile))
+                Log.i(TAG, "Photo success ${photoUri.path}")
+            }
+
+            user.saveInBackground { e ->
+                if (e == null) {
+                    //Save successfull
+                    Toast.makeText(requireContext(), "Profile picture updated!", Toast.LENGTH_SHORT).show()
+                    Glide.with(requireContext())
+                        .load(user.getParseFile(KEY_PFP)?.url)
+                        .transform(CircleCrop())
+                        .into(profilePic)
+                } else {
+                    // Something went wrong while saving
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Error: Something went wrong trying to save your profile image!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+//            // Load the selected image into a preview
+//            ivProfilePic.setImageBitmap(BitmapFactory.decodeFile(resizedFile!!.absolutePath))
+        }
+    }
+
+    fun getPhotoFileUri(fileName: String): File {
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        val mediaStorageDir =
+            File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                UserProfileFragment.TAG
+            )
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d(UserProfileFragment.TAG, "failed to create directory")
+        }
+
+        // Return the file target for the photo based on filename
+        return File(mediaStorageDir.path + File.separator + fileName)
     }
 
     companion object {
