@@ -25,6 +25,7 @@ import com.example.simpletodo.LoginActivity.Companion.TAG
 import com.example.simpletodo.PlayDailyActivity
 import com.example.simpletodo.Player
 import com.example.simpletodo.R
+import com.example.simpletodo.ResultActivity
 import com.parse.*
 
 
@@ -75,7 +76,7 @@ class SelectionFragment : Fragment() {
 
         titleView.text = titleString + " " + player + "!"
         ivDaily.setOnClickListener(View.OnClickListener {
-            val intent = Intent(context, PlayDailyActivity::class.java)
+            val intent = Intent(context, ResultActivity::class.java)
 
             context?.startActivity(intent)
         })

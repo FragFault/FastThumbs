@@ -50,12 +50,12 @@ class LeaderboardFragment : Fragment() {
         query.findInBackground(object: FindCallback<Player>{
             override fun done(players: MutableList<Player>?, e: ParseException?) {
                     if(e != null){
-                        Log.e("LeaderboardFragment:","Error fetching users")
+                        Log.e("LeaderboarFragment:","Error fetching users")
                     }else{
                         if (players != null){
                             Log.e("yo:",players.size.toString())
                             for (player in players){
-                                Log.i("LeaderboardFragment:","Player:"+player.getUsername()!!)
+                                Log.i("LeaderboardFragment:","Player:"+player.getBio()!!)
                             }
 
                             allPlayers.addAll(players)
