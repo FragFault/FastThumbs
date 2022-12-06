@@ -18,14 +18,14 @@ import com.parse.ParseUser
 
 @ParseClassName("GameLogs")
 class GameResults : ParseObject(){
-    fun getPoints(): Number? {
-        return getNumber(KEY_POINTS)
+    fun getPoints(): Int? {
+        return getInt(KEY_POINTS)
     }
     fun setPoints(points: Number) {
         put(KEY_POINTS, points)
     }
-    fun getSpeed(): Number? {
-        return getNumber(KEY_SPEED)
+    fun getSpeed(): Int? {
+        return getInt(KEY_SPEED)
     }
     fun setSpeed(speed: Number) {
         put(KEY_SPEED, speed)
@@ -42,8 +42,8 @@ class GameResults : ParseObject(){
     fun setCompetitive(competitive: Boolean) {
         put(KEY_COMPETITIVE, competitive)
     }
-    fun getAccuracy(): Number? {
-        return getNumber(KEY_ACCURACY)
+    fun getAccuracy(): Int? {
+        return getInt(KEY_ACCURACY)
     }
     fun setAccuracy(accuracy: Number) {
         put(KEY_ACCURACY, accuracy)

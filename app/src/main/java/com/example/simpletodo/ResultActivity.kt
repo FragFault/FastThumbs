@@ -21,48 +21,53 @@ class ResultActivity: AppCompatActivity() {
             goToMainActivity()
         }
 
-        //queryPosts()
+        queryPosts()
     }
 
     //query for all gamelogs testing
-//    fun queryPosts() {
-//        //gets current user
-//        val currentUser = ParseUser.getCurrentUser()
-//        if (currentUser != null) {
-//            Log.i(TAG, "currentUser: " + currentUser.objectId )
-//        } else {
-//            Log.i(TAG, "There was an error retrieving current user")
-//        }
-//
-//        //specify which class to query in data base
-//        val query: ParseQuery<GameLogs> = ParseQuery.getQuery(GameLogs::class.java)
-//        //find all gamelogs in our server
-//        query.findInBackground(object: FindCallback<GameLogs> {
-//            override fun done(gamelogs: MutableList<GameLogs>?, e: ParseException?) {
-//                if(e != null) {
-//                    //Something when wrong getting the game logs
-//                    Log.e(TAG, "Error getting Gamelogs")
-//                }else{
-//                    if (gamelogs != null ){
-//                        for (gamelog in gamelogs) {
-//                            Log.i(TAG, "gamelog: " + gamelog.getPoints())
-//                            findViewById<TextView>(R.id.speedRes).text = gamelog.getSpeed().toString() + "WPM"
-//                        }
-//                    }
-//                }
-//            }
-//
-//        })
-//    }
-//
+    fun queryPosts() {
+        //gets current user
+        val currentUser = ParseUser.getCurrentUser()
+        if (currentUser != null) {
+            Log.i(TAG, "currentUser: " + currentUser.objectId )
+        } else {
+            Log.i(TAG, "There was an error retrieving current user")
+        }
+
+        //specify which class to query in data base
+        val query = ParseQuery.getQuery(GameResults::class.java)
+        //find all gamelogs in our server
+        query.whereEqualTo(GameResults.KEY_USER, currentUser)
+        query.orderByDescending("updatedAt")
+        query.setLimit(1)
+        query.findInBackground { gamelogs , e ->
+                if(e != null) {
+                    //Something when wrong getting the game logs
+                    Log.e(TAG, "Error getting Gamelogs")
+                }else{
+                    if (gamelogs != null ){
+                        for (gamelog in gamelogs) {
+                            Log.i(TAG, "gamelog: " + gamelog.getPoints())
+                            findViewById<TextView>(R.id.speedRes).text = gamelog.getSpeed().toString() + "WPM"
+                            findViewById<TextView>(R.id.accRes).text = gamelog.getAccuracy().toString() + "%"
+                            if (gamelog.getDaily() == true){
+                                findViewById<TextView>(R.id.dailyCText).text = "1/1"
+                            }
+                        }
+                    }
+                }
+        }
+
+    }
+
     private fun goToMainActivity() {
         val intent = Intent(this@ResultActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
-//
-//    companion object{
-//        const val TAG = "ResultsActivity"
-//    }
+
+    companion object{
+        const val TAG = "ResultsActivity"
+    }
 
 }
