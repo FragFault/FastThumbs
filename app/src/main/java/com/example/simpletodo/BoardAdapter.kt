@@ -18,7 +18,7 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
 
     override fun onBindViewHolder(holder: BoardAdapter.ViewHolder, position: Int) {
         val player = players.get(position)
-        holder.bind(player,position+3)
+        holder.bind(player,position+4)
     }
 
     override fun getItemCount(): Int {
@@ -42,7 +42,7 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
             rank.text = index.toString()
             boardUsername.text = player.getUser()?.username as String
             points.text = player.getTotal().toString()+" Pts"
-            Glide.with(itemView.context).load(player.getPImage()?.url).into(image)
+            Glide.with(itemView.context).load(player.getPImage()?.url).circleCrop().into(image)
         }
     }
 }
