@@ -1,11 +1,68 @@
 package com.example.simpletodo
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.parse.FindCallback
+import com.parse.ParseException
+import com.parse.ParseQuery
+import com.parse.ParseUser
 
-class ResultActivity : AppCompatActivity() {
+
+class ResultActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_results)
+
+        val conBtn = findViewById<Button>(R.id.conBtn).setOnClickListener {
+            goToMainActivity()
+        }
+
+        //queryPosts()
     }
+
+    //query for all gamelogs testing
+//    fun queryPosts() {
+//        //gets current user
+//        val currentUser = ParseUser.getCurrentUser()
+//        if (currentUser != null) {
+//            Log.i(TAG, "currentUser: " + currentUser.objectId )
+//        } else {
+//            Log.i(TAG, "There was an error retrieving current user")
+//        }
+//
+//        //specify which class to query in data base
+//        val query: ParseQuery<GameLogs> = ParseQuery.getQuery(GameLogs::class.java)
+//        //find all gamelogs in our server
+//        query.findInBackground(object: FindCallback<GameLogs> {
+//            override fun done(gamelogs: MutableList<GameLogs>?, e: ParseException?) {
+//                if(e != null) {
+//                    //Something when wrong getting the game logs
+//                    Log.e(TAG, "Error getting Gamelogs")
+//                }else{
+//                    if (gamelogs != null ){
+//                        for (gamelog in gamelogs) {
+//                            Log.i(TAG, "gamelog: " + gamelog.getPoints())
+//                            findViewById<TextView>(R.id.speedRes).text = gamelog.getSpeed().toString() + "WPM"
+//                        }
+//                    }
+//                }
+//            }
+//
+//        })
+//    }
+//
+    private fun goToMainActivity() {
+        val intent = Intent(this@ResultActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+//
+//    companion object{
+//        const val TAG = "ResultsActivity"
+//    }
+
 }
