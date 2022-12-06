@@ -43,10 +43,12 @@ class UserProfileFragment : Fragment() {
     lateinit var averageSpeed: TextView
     lateinit var averageAcc: TextView
     lateinit var totalPoints: TextView
+    lateinit var submitButton: Button
     lateinit var user : ParseUser
     lateinit var GameLogRecyclerView: RecyclerView
     lateinit var adapter: GameLogAdapter
     var allGameLogs: MutableList<GameResults> = mutableListOf()
+    var photoFile: File?= null
 
 
     val photoFileName = "pfp.jpg"
@@ -87,6 +89,32 @@ class UserProfileFragment : Fragment() {
         queryGameLogs()
 
 
+        view.findViewById<Button>(R.id.submit).setOnClickListener {
+
+            Toast.makeText(requireContext(), "bio" + bio.text, Toast.LENGTH_SHORT).show()
+            val query = ParseQuery.getQuery(Player::class.java)
+            query.include(Player.KEY_USER)
+            query.whereEqualTo(Player.KEY_USER, user)
+            query.findInBackground { detail, e ->
+                if (e == null) {
+                    Log.d(TAG, "Objects: $detail")
+                    for (element in detail) {
+                        element.setBio(bio.text.toString())
+                        element.setPImage(ParseFile(photoFile))
+                        element.saveInBackground { exception ->
+                            if (exception != null) {
+                                Log.e(TAG, "Error while saving changes")
+                                Toast.makeText(requireContext(), "Error: Something went wrong trying to save your profile changes!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Log.i(TAG, "Successfully saved changes")
+                                Toast.makeText(requireContext(), "Profile Update!", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         profilePic.setOnClickListener {
             onPickPhoto()
         }
@@ -116,9 +144,10 @@ class UserProfileFragment : Fragment() {
                             .into(profilePic)
                     }
                     bio.setText(element.getBio()).toString()
-                    totalPoints.setText(element.getPoints().toString())
-                    averageAcc.setText(element.getAcc().toString()+"%")
+                    totalPoints.setText(element.getTotal().toString())
+                    averageAcc.setText(element.getAccuracy().toString()+"%")
                     averageSpeed.setText(element.getSpeed().toString()+" WPM")
+
 
                 }
             } else {
@@ -202,6 +231,7 @@ class UserProfileFragment : Fragment() {
             // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
             val resizedFile = getPhotoFileUri(photoFileName + "_resized")
             resizedFile.createNewFile()
+            photoFile = resizedFile
             val fos = FileOutputStream(resizedFile)
             // Write the bytes of the bitmap to file
             fos.write(bytes.toByteArray())

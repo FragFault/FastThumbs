@@ -90,7 +90,7 @@ class OtherProfileFragment : Fragment() {
                     Log.i(TAG, "this is the bio" + element.getBio().toString())
                     element.getBio()
 
-                    username.setText(user.username.toString())
+                    username.setText(element.getUsername().toString())
                     if (element.getPImage() != null) {
                         Glide.with(requireContext())
                             .load(element.getPImage()?.url)
@@ -103,8 +103,8 @@ class OtherProfileFragment : Fragment() {
                             .into(profilePic)
                     }
                     bio.setText(element.getBio()).toString()
-                    totalPoints.setText(element.getPoints().toString())
-                    averageAcc.setText(element.getAcc().toString()+"%")
+                    totalPoints.setText(element.getTotal().toString())
+                    averageAcc.setText(element.getAccuracy().toString()+"%")
                     averageSpeed.setText(element.getSpeed().toString()+" WPM")
 
                 }

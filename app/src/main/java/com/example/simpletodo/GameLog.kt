@@ -1,6 +1,6 @@
 package com.example.simpletodo
 
-import com.example.simpletodo.Player.Companion.KEY_POINTS
+import com.example.simpletodo.Player.Companion.KEY_TOTAL
 import com.parse.Parse
 import com.parse.ParseClassName
 import com.parse.ParseObject
