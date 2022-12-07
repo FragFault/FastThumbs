@@ -98,4 +98,8 @@ class LeaderboardFragment : Fragment() {
 
         })
     }
+
+    companion object {
+        const val contextual = "hello"
+    }
 }

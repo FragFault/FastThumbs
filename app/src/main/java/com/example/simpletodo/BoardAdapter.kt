@@ -52,10 +52,12 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
        override fun onClick(v: View?) {
            val thePlayer = players[adapterPosition]
            val userId = thePlayer.getUser().toString()
+           val passUsername = thePlayer.getUser()?.username
 
            val bundle = Bundle()
            bundle.putString("userId", userId)
-            // set Fragmentclass Arguments
+           bundle.putString("username", passUsername)
+           // set Fragmentclass Arguments
            val fragObj = OtherProfileFragment()
            fragObj.setArguments(bundle)
 
