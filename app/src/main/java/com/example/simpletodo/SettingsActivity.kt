@@ -83,7 +83,6 @@ class SettingsActivity() : AppCompatActivity() {
 //            var fragmentToShow = UserProfileFragment()
 //            fragmentManager.beginTransaction().replace(R.id.flContainer, fragmentToShow).commit()/
 
-
             this.onBackPressed()
         }
     }
