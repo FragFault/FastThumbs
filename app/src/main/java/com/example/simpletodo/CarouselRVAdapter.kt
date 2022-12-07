@@ -95,7 +95,6 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
 
         });
 
-
     }
 
     companion object {
