@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.31979166666666664" />
         <entry key="app/src/main/res/layout/item_carousel.xml" value="0.31979166666666664" />
         <entry key="app/src/main/res/layout/item_leaderboard.xml" value="0.31875" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.303125" />
       </map>
     </option>
   </component>
