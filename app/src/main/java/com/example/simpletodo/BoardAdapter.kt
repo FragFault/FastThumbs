@@ -8,13 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.simpletodo.fragments.OtherProfileFragment
-import com.parse.ParseUser
 
 class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardAdapter.ViewHolder {
@@ -31,7 +28,7 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
         return players.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val rank : TextView
         val boardUsername:  TextView
         val points: TextView
@@ -51,8 +48,26 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
             Glide.with(itemView.context).load(player.getPImage()?.url).circleCrop().into(image)
         }
 
-        override fun onClick(p0: View?) {
-            val player = players[adapterPosition]
-        }
+       override fun onClick(v: View?) {
+           val thePlayer = players[adapterPosition]
+           val userId = thePlayer.getUser().toString()
+
+           Log.i(TAG, "The thing was clicked: $userId")
+
+           val bundle = Bundle()
+           bundle.putString("userId", userId)
+            // set Fragmentclass Arguments
+           val fragObj = OtherProfileFragment()
+           fragObj.setArguments(bundle)
+
+           (context as FragmentActivity).supportFragmentManager.beginTransaction()
+               .replace(R.id.flContainer, fragObj)
+               .commit()
+       }
+   }
+
+    companion object {
+        private const val TAG = "ADAPTER"
+
     }
 }
