@@ -44,6 +44,7 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
         fun bind(player: Player,index: Int){
             rank.text = index.toString()
             boardUsername.text = player.getUser()?.username as String
+
             points.text = player.getTotal().toString()+" Pts"
             Glide.with(itemView.context).load(player.getPImage()?.url).circleCrop().into(image)
         }
@@ -51,8 +52,6 @@ class BoardAdapter(val context: Context, val players: List<Player>) : RecyclerVi
        override fun onClick(v: View?) {
            val thePlayer = players[adapterPosition]
            val userId = thePlayer.getUser().toString()
-
-           Log.i(TAG, "The thing was clicked: $userId")
 
            val bundle = Bundle()
            bundle.putString("userId", userId)

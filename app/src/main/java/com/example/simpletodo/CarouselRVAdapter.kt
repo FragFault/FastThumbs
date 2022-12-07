@@ -12,7 +12,14 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.R
 import com.example.simpletodo.fragments.SelectionFragment
+import okhttp3.OkHttpClient
+
+import okhttp3.*
+
 import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 //Similar to a recycler view a carousel adapter is created
 
@@ -37,7 +44,15 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
     }
 
     inner class CarouselItemViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener { //Made the item View holder as an inner class to listen for clicks on each recyclerview item
-        private val LYRICS_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
+
+        private val POETRY_URL = "http://52/.87/.203/.225/api/getPoetryPrompt"
+
+        private val LYRICS_URL = "http://52.87.203.225/api/getLyricsPrompt"
+
+        private val MOVIES_URL = "http://52.87.203.225/api/getMoviePrompt"
+
+        var prompt_Data = POETRY_URL
+
         init {
             itemView.setOnClickListener(this)
         }
@@ -46,54 +61,59 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
             val category = carouselDataList.keys.elementAt(adapterPosition)
             Log.i(TAG, "$category")
 
-            val promptData = dataRetrieve(LYRICS_URL, category)
+            if(category == "Poetry"){
+                prompt_Data = POETRY_URL
+            }else if(category == "Movies"){
+                prompt_Data = MOVIES_URL
+            }else{
+                prompt_Data = LYRICS_URL
+            }
 
+            dataRetrieve(prompt_Data, category)
 
         }
     }
 
     fun dataRetrieve(CATEGORY_URL: String, selection: String) {
-        val client = AsyncHttpClient()
-        var INDEX = 0
 
-        if(selection == "Poetry"){
-            INDEX = 0
-        }else if(selection == "Movies"){
-            INDEX = 1
-        }else{
-            INDEX = 2
-        }
+        val client = OkHttpClient.Builder().connectTimeout(100,TimeUnit.SECONDS).writeTimeout(100,TimeUnit.SECONDS).readTimeout(300,TimeUnit.SECONDS).build()
 
-        client.get(CATEGORY_URL, object: JsonHttpResponseHandler() {
-
-            override fun onSuccess(statusCode: Int, headers: okhttp3.Headers?, json: JSON) {
-                Log.i(SelectionFragment.TAG, "onSuccess: JSON data $json")
-                try {
-                    val promptJsonArray = json.jsonObject.getJSONArray("results")
-                    val prompt = promptJsonArray.getJSONObject(INDEX)
-                    val theString =  prompt.getString("overview")
-                    Log.i(SelectionFragment.TAG, "The prompt: $theString")
-
-                    //Add Data to Play Activity
-                    val intent = Intent(context, PlayActivity::class.java)
-                    intent.putExtra("prompt", theString);
+        Log.e("dataRetrieve",CATEGORY_URL)
+        val request = okhttp3.Request.Builder().url(CATEGORY_URL).build()
+        client.newCall(request).enqueue(object: Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("dataRetrieve:","FAIL")
+            }
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                if(body!=null){
+                    val jObject = JSONObject(body)
+                    val intent = Intent(context,PlayActivity::class.java)
+                    intent.putExtra("prompt",jObject.get("prompt").toString())
                     context.startActivity(intent)
 
-                } catch (e: JSONException) {
-                    Log.e(SelectionFragment.TAG, "Encountered exception $e")
                 }
             }
+        })
 
-            override fun onFailure(
-                statusCode: Int,
-                headers: okhttp3.Headers?,
-                response: String?,
-                throwable: Throwable?
-            ) {
-                Log.e(SelectionFragment.TAG, "onFailure $statusCode")
-            }
+//        client.get(CATEGORY_URL, object: JsonHttpResponseHandler() {
+//
+//            override fun onSuccess(statusCode: Int, headers: okhttp3.Headers?, json: JSON?) {
+//                Log.i(SelectionFragment.TAG, "onSuccess: JSON data $json")
+//                try {
+//                    val promptJsonArray = json?.jsonObject?.getJSONArray("results")
+//                    val prompt = promptJsonArray?.getJSONObject(INDEX)
+//                    val theString = prompt?.getString("overview")
+//                    Log.i(SelectionFragment.TAG, "The prompt: $theString")
+//
+//                    //Add Data to Play Activity
+//                    val intent = Intent(context, PlayActivity::class.java)
+//                    intent.putExtra("prompt", theString);
+//                    context.startActivity(intent)
+//
+//                } catch (e: JSONException) {
+//                    Log.e(SelectionFragment.TAG, "Encountered exception $e")
 
-        });
 
     }
 
