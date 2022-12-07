@@ -12,6 +12,8 @@ import android.content.Intent
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,12 +31,14 @@ import com.parse.ParseUser
 class OtherProfileFragment : Fragment() {
 
     lateinit var profilePic: ImageView
-    lateinit var username: TextView
+    lateinit var otherusername: TextView
     lateinit var bio: TextView
     lateinit var averageSpeed: TextView
     lateinit var averageAcc: TextView
     lateinit var totalPoints: TextView
-    lateinit var user : ParseUser
+//    lateinit var user : ParseUser
+    lateinit var message : String
+    lateinit var message2 : String
     lateinit var GameLogRecyclerView: RecyclerView
     lateinit var adapter: GameLogAdapter
     var allGameLogs: MutableList<GameResults> = mutableListOf()
@@ -51,33 +55,34 @@ class OtherProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val bundle = arguments
-        val message = bundle!!.getString("userId")
+        Log.i(TAG, "value of bundle" + bundle)
+        message = bundle!!.getString("userId").toString()
+        message2 = bundle!!.getString("username").toString()
+        Log.i(TAG, "value of message" + message)
 
-        if (message != null) {
-            Log.i("Other", message)
-        }
-
-        val theMessage = view?.findViewById<TextView>(R.id.username)
-
-        if (theMessage != null) {
-            theMessage.text = message as String
-        }
+//
+//       val theMessage = view?.findViewById<TextView>(R.id.username)
+//
+//        if (theMessage != null) {
+//            theMessage.text = message as String
+//        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_other_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val fragObj = LeaderboardFragment()
+
         view.findViewById<ImageButton>(R.id.backbutton)
             .setOnClickListener(View.OnClickListener {
-                val intent = Intent(context, LeaderboardFragment::class.java)
-                context?.startActivity(intent)
+                (context as FragmentActivity).supportFragmentManager.beginTransaction().replace(R.id.flContainer, fragObj).commit()
             })
 
         super.onViewCreated(view, savedInstanceState)
-        user = ParseUser.getCurrentUser()
+//        user = ParseUser.getCurrentUser()
 
         profilePic = view.findViewById(R.id.profilePic2)
-        username = view.findViewById(R.id.username2)
+        otherusername = view.findViewById(R.id.username2)
         bio = view.findViewById(R.id.bio2)
         totalPoints = view.findViewById(R.id.userPointsTotal2)
         averageSpeed = view.findViewById(R.id.userSpeed2)
@@ -88,15 +93,15 @@ class OtherProfileFragment : Fragment() {
         GameLogRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-        Log.d(TAG, user.objectId)
+//        Log.d(TAG, user.objectId)
         profiledetails()
         queryGameLogs()
     }
 
     fun profiledetails() {
         val query = ParseQuery.getQuery(Player::class.java)
-        query.include(Player.KEY_USER)
-        query.whereEqualTo(Player.KEY_USER, user)
+        query.include(message)
+//        query.whereEqualTo(Player.KEY_USER, message)
         query.findInBackground { detail , e ->
             if (e == null) {
                 Log.d(TAG, "Objects: $detail")
@@ -104,7 +109,7 @@ class OtherProfileFragment : Fragment() {
                     Log.i(TAG, "this is the bio" + element.getBio().toString())
                     element.getBio()
 
-                    username.setText(element.getUsername().toString())
+                    otherusername.setText(message2)
                     if (element.getPImage() != null) {
                         Glide.with(requireContext())
                             .load(element.getPImage()?.url)
@@ -126,14 +131,14 @@ class OtherProfileFragment : Fragment() {
                 Log.e(TAG, "Parse Error: ", e)
             }
         }
-        Log.e(TAG, "This works")
+        Log.e(TAG, Player.KEY_USER)
 
     }
 
     fun queryGameLogs(){
         val query = ParseQuery.getQuery(GameResults::class.java)
-        query.include(GameResults.KEY_USER)
-        query.whereEqualTo(GameResults.KEY_USER, user)
+        query.include(message)
+//        query.whereEqualTo(GameResults.KEY_USER, message)
         query.findInBackground{ detail, e ->
             if (e == null) {
                 Log.d(TAG, "Objects: $detail")

@@ -64,15 +64,16 @@ class Player : ParseObject() {
         put(KEY_GAMES, games)
     }
     fun getUsername(): String? {
-        return getString(KEY_USER)
+        return getString(KEY_USERNAME)
     }
 
     fun setUsername(username: String){
-        put(KEY_USER, username)
+        put(KEY_USERNAME, username)
     }
 
     companion object {
         const val KEY_USER = "user"
+        const val KEY_USERNAME = "user"
         const val KEY_IMAGE = "profilePic"
         const val KEY_ACCURACY = "averageAcc"
         const val KEY_TOTAL = "totalPoints"
