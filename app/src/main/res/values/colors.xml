@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="login_blue">#0096F6</color>
+    <color name="end_gold">#FFD700</color>
     <color name="signup_green">#4FC43A</color>
     <color name="button_gray">#D5D6D6</color>
     <color name="medium_green">#ff17bf63</color>

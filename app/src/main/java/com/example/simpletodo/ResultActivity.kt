@@ -1,13 +1,13 @@
 package com.example.simpletodo
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.parse.FindCallback
-import com.parse.ParseException
 import com.parse.ParseQuery
 import com.parse.ParseUser
 
@@ -64,6 +64,25 @@ class ResultActivity: AppCompatActivity() {
         val intent = Intent(this@ResultActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+    fun shareOnTwitter() {
+        val pm = packageManager
+        try {
+            val waIntent = Intent(Intent.ACTION_SEND)
+            waIntent.type = "text/plain"
+            val text = "Insert Tweet Here"
+            val info = pm.getPackageInfo("com.twitter.android", PackageManager.GET_META_DATA)
+            //Check if package exists or not. If not then code
+            //in catch block will be called
+            waIntent.setPackage("com.twitter.android")
+            waIntent.putExtra(Intent.EXTRA_TEXT, text)
+            startActivity(Intent.createChooser(waIntent, "Share with"))
+        } catch (e: PackageManager.NameNotFoundException) {
+            Toast.makeText(this, "Twitter not Installed", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
+        return
     }
 
     companion object{
