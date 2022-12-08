@@ -134,16 +134,21 @@ class UserProfileFragment : Fragment() {
                     element.getBio()
 
                     username.setText(user.username.toString())
+                    Log.i(TAG, getContext().toString())
                     if (element.getPImage() != null) {
-                        Glide.with(requireContext())
-                            .load(element.getPImage()?.url)
-                            .transform(CircleCrop())
-                            .into(profilePic)
+                        activity?.let {
+                            Glide.with(it)
+                                .load(element.getPImage()?.url)
+                                .transform(CircleCrop())
+                                .into(profilePic)
+                        }
                     } else {
-                        Glide.with(requireContext())
-                            .load(R.drawable.instagram_user_filled_24)
-                            .transform(CircleCrop())
-                            .into(profilePic)
+                        activity?.let {
+                            Glide.with(it)
+                                .load(R.drawable.instagram_user_filled_24)
+                                .transform(CircleCrop())
+                                .into(profilePic)
+                        }
                     }
                     bio.setText(element.getBio()).toString()
                     totalPoints.setText(element.getTotal().toString())
