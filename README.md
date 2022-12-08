@@ -415,9 +415,40 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-- [x] Game Functionality
-- [x] Profile Page Functionality
-- [x] Select Level Page Functionality
-- [x] Leaderboard Page Functionality
-- [x] Results Page
+## Game Functionality
+- [x] User can see live countdown of how much time left to complete game.
+- [x] User can see and interact with keyboard.
+- [x] User input impacts/interacts with the visual display of the prompt.
+- [x] Upon completion of prompt, player will be moved to results screen, if applicable.
+- [x] In background, API is used to generate prompt. [PLEASE NOTE: Elijah did this feature, SEE COMMENTS FOR MORE INFO]
+- [x] In background, user results are saved in the database & their score is updated.
+- [x] Remove ability to copy and paste. (If applicable)
+##Profile Page Functionality
+On a user's own profile page.
 
+- [x] User can edit their profile picture and bio.
+- [x] User can go to settings page.
+- [x] For a user seeing someone else's profile page.
+- [x] User can see profile picture & bio.
+- [x] User can go back to the leaderboards page.
+On BOTH pages:
+
+- [x] User can see accuracy & speed stats.
+- [x] User can see total points.
+- [x] User can see past 3 games. [4 datapoints: 1) date & time 2) speed 3) accuracy 4) category.]
+##Selection Screen Functionality
+- [x] User can toggle casual or competitive mode.
+- [x] User can select a category, this sends them to play screen.
+- [x] User can select the daily challenge, this sends them to play screen.
+##Leaderboard Functionality
+- [x] Screen populates with top 3 players in tiered view.
+- [x] Screen populates with top 20 players in a list.
+- [x] Entire leaderboard shows 3 user metrics: 1) pfp 2) username 3) total points.
+- [x] Players info/pfp is clickable and brings user to the profile page of the user they clicked.
+- [x] Infinite pagination is allowed.
+##Results Page Functionality
+- [x] User can see image of category / daiy challenge just played.
+- [x] User can see number of daily challenges left to play.
+- [x] User can see the speed & accuracy from game just played.
+- [x] User can see their score earned from game just played. (If applicable)
+- [x] User can move to level select screen.
