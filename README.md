@@ -415,9 +415,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-- [x]Game Functionality
-- [x]Profile Page Functionality
-- [x]Select Level Page Functionality
-- [x]Leaderboard Page Functionality
-- [x]Results Page
+- [x] Game Functionality
+- [x] Profile Page Functionality
+- [x] Select Level Page Functionality
+- [x] Leaderboard Page Functionality
+- [x] Results Page
 
