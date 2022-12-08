@@ -411,7 +411,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Fast_Thumbs GIF SPRINT 3
 
-<img src='https://github.com/FragFault/FastThumbs/blob/GIF_BRANCH/Project_Sprint2_1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/FragFault/FastThumbs/blob/GIF_BRANCH/walkthrough_part3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
