@@ -46,6 +46,7 @@
 
     <TextView
         android:id="@+id/tvPrompt"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="350dp"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra, nibh eget varius efficitur, enim est aliquet nunc, at pretium est nisl quis purus. Vivamus elementum lacus nibh. Praesent tristique blandit metus, vel mollis nisi mattis quis. Pellentesque luctus felis mauris. Integer ante felis, pretium ac mauris placerat, scelerisque sagittis purus. Quisque tempus lorem odio, at viverra lectus vulputate ac. Mauris tempor pellentesque dolor, sit amet consequat mauris tincidunt non. Suspendisse luctus consequat lorem, at laoreet risus molestie id.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra, nibh eget varius efficitur, enim est aliquet nunc, at pretium est nisl quis purus. Vivamus elementum lacus nibh. Praesent tristique blandit metus, vel mollis nisi mattis quis. Pellentesque luctus felis mauris. Integer ante felis, pretium ac mauris placerat, scelerisque sagittis purus. Quisque tempus lorem odio, at viverra lectus vulputate ac. Mauris tempor pellentesque dolor, sit amet consequat mauris tincidunt non. Suspendisse luctus consequat lorem, at laoreet risus molestie id."
@@ -67,5 +68,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPrompt" />
 
+    <EditText
+        android:id="@+id/etKeyboardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
