@@ -100,7 +100,9 @@ class UserProfileFragment : Fragment() {
                     Log.d(TAG, "Objects: $detail")
                     for (element in detail) {
                         element.setBio(bio.text.toString())
-                        element.setPImage(ParseFile(photoFile))
+                        if(photoFile!=null){
+                            element.setPImage(ParseFile(photoFile))
+                        }
                         element.saveInBackground { exception ->
                             if (exception != null) {
                                 Log.e(TAG, "Error while saving changes")
