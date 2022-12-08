@@ -179,7 +179,7 @@ class SettingsActivity() : AppCompatActivity() {
 
     private fun sendBug(){ //FUNCTIONAL????
 
-        val recipient = "Whatzituya2@gmail.com"
+        val recipient = "fastthumbsreport@gmail.com"
         val addresses = recipient.split(",".toRegex()).toTypedArray()
         val subject = "Bug Report"
         val message = "Hi, theres seems to be an issue with FastThumbs."
