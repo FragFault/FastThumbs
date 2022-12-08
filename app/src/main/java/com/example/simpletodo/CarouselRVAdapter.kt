@@ -45,7 +45,7 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
 
     inner class CarouselItemViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener { //Made the item View holder as an inner class to listen for clicks on each recyclerview item
 
-        private val POETRY_URL = "http://52/.87/.203/.225/api/getPoetryPrompt"
+        private val POETRY_URL = "http://52.87.203.225/api/getPoetryPrompt"
 
         private val LYRICS_URL = "http://52.87.203.225/api/getLyricsPrompt"
 
