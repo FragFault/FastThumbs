@@ -6,12 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.simpletodo.R
 import android.content.Intent
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.*
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.simpletodo.*
+import com.parse.FindCallback
+import com.parse.ParseException
 import com.parse.ParseQuery
 import com.parse.ParseUser
 
@@ -101,12 +100,14 @@ class OtherProfileFragment : Fragment() {
     fun profiledetails() {
         val query = ParseQuery.getQuery(Player::class.java)
         query.include(message)
-//        query.whereEqualTo(Player.KEY_USER, message)
-        query.findInBackground { detail , e ->
+        query.whereContains(Player.KEY_USER, message)
+        query.findInBackground{ detail, e ->
+
+
             if (e == null) {
                 Log.d(TAG, "Objects: $detail")
                 for (element in detail) {
-                    Log.i(TAG, "this is the bio" + element.getBio().toString())
+                    Log.i(TAG, "this is the bio " + element.getBio().toString())
                     element.getBio()
 
                     otherusername.setText(message2)
@@ -138,20 +139,42 @@ class OtherProfileFragment : Fragment() {
     fun queryGameLogs(){
         val query = ParseQuery.getQuery(GameResults::class.java)
         query.include(message)
-//        query.whereEqualTo(GameResults.KEY_USER, message)
-        query.findInBackground{ detail, e ->
-            if (e == null) {
-                Log.d(TAG, "Objects: $detail")
-                for (element in detail) {
-//                    Log.i(TAG, "this is the bio" + element.getDate().toString())
+        query.orderByDescending("createdAt")
+        query.whereContains(GameResults.KEY_USER, message)
+        query.findInBackground( object: FindCallback<GameResults> {
+            override fun done(detail: MutableList<GameResults>?, e: ParseException?) {
+                Log.i(TAG, "value of size " + detail?.size)
+                if (e == null) {
+                    Log.d(TAG, "Objects: $detail")
+//                    for (element in detail) {
+////                    Log.i(TAG, "this is the bio" + element.getDate().toString())
+//
+//                        allGameLogs.addAll(detail)
+//                        adapter.notifyDataSetChanged()
+//                    }
+                    if (detail?.size!! > 3) {
+                        allGameLogs.addAll(detail.slice(0 .. 2 ))
+                        adapter.notifyDataSetChanged()
+                    } else if (detail?.size!! > 2) {
+                        allGameLogs.addAll(detail.slice(0 .. 1 ))
+                        adapter.notifyDataSetChanged()
+                    } else if (detail?.size!! > 1) {
+                        allGameLogs.addAll(detail.slice(0 .. 0 ))
+                        adapter.notifyDataSetChanged()
+                    }
+                    else if (detail?.size!! == 1) {
+                        allGameLogs.addAll(detail.slice(0 .. 0 ))
+                        adapter.notifyDataSetChanged()
+                    }else {
+                        Toast.makeText(requireContext(), "Play a game to witness your own success!", Toast.LENGTH_SHORT).show()
+                    }
 
-                    allGameLogs.addAll(detail)
-                    adapter.notifyDataSetChanged()
+                } else {
+                    Log.i("Fragment:", "GameLog is null")
                 }
-            }else {
-                Log.i("Fragment:","GameLog is null")
             }
-        }
+
+        })
 
 
     }

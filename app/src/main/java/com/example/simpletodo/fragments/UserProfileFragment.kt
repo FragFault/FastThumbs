@@ -168,22 +168,40 @@ class UserProfileFragment : Fragment() {
     fun queryGameLogs(){
         val query = ParseQuery.getQuery(GameResults::class.java)
         query.include(GameResults.KEY_USER)
+        query.orderByDescending("createdAt")
         query.whereEqualTo(GameResults.KEY_USER, user)
-        query.findInBackground{ detail, e ->
-            if (e == null) {
-                Log.d(TAG, "Objects: $detail")
-                for (element in detail) {
-//                    Log.i(TAG, "this is the bio" + element.getDate().toString())
-
-                    allGameLogs.addAll(detail)
-                    adapter.notifyDataSetChanged()
-                }
-            }else {
-                        Log.i("Fragment:","GameLog is null")
+        query.findInBackground( object: FindCallback<GameResults> {
+            override fun done(detail: MutableList<GameResults>?, e: ParseException?) {
+                if (e == null) {
+                    Log.d(TAG, "Objects: $detail")
+//                    for (element in detail) {
+////                    Log.i(TAG, "this is the bio" + element.getDate().toString())
+//
+//                        allGameLogs.addAll(detail)
+//                        adapter.notifyDataSetChanged()
+//                    }
+                    if (detail?.size!! > 3) {
+                        allGameLogs.addAll(detail.slice(0 .. 2 ))
+                        adapter.notifyDataSetChanged()
+                        Log.i(TAG, "more than 3")
+                    } else if (detail?.size!! > 2) {
+                        allGameLogs.addAll(detail.slice(0 .. 1 ))
+                        adapter.notifyDataSetChanged()
+                        Log.i(TAG, "more than 2")
+                    } else if (detail?.size!! > 1) {
+                        allGameLogs.addAll(detail.slice(0 .. 0 ))
+                        adapter.notifyDataSetChanged()
+                        Log.i(TAG, "more than 1")
+                    } else {
+                        Toast.makeText(requireContext(), "Play a game to witness your own success!", Toast.LENGTH_SHORT).show()
                     }
+
+                } else {
+                    Log.i("Fragment:", "GameLog is null")
                 }
+            }
 
-
+        })
         }
 
 
