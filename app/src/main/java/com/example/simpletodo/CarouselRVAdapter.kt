@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 
 //Similar to a recycler view a carousel adapter is created
 
-class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, private val context: Context) : //The carousel data list must be a map with a key, value pair of String Drawable
+class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, private val context: Context, private val comp: Boolean) : //The carousel data list must be a map with a key, value pair of String Drawable
     RecyclerView.Adapter<CarouselRVAdapter.CarouselItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselItemViewHolder {
@@ -90,6 +90,8 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
                     val jObject = JSONObject(body)
                     val intent = Intent(context,PlayActivity::class.java)
                     intent.putExtra("prompt",jObject.get("prompt").toString())
+                    Log.i("Adapter", comp.toString())
+                    intent.putExtra("isCompetetive", comp)
                     context.startActivity(intent)
 
                 }

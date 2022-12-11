@@ -25,20 +25,29 @@ import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.RequestParams
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
+import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.R
 import com.example.simpletodo.ResultActivity
 import com.parse.ParseUser
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 
 class SelectionFragment : Fragment() {
     // initiate a Switch
-    private val LYRICS_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"
+    private val LYRICS_URL = "http://52.87.203.225/api/getLyricsPrompt"
     private val POETRY_URL = "https://52/.87/.203/.225/api/getPoetryPrompt"
     private val MOVIE_URL =  "http://52.87.203.225/api/getMoviePrompt"
 
     // TODO: Rename and change types of parameters
-    var isCometetive: Boolean = false
+    private var isCompetetive: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,26 +67,44 @@ class SelectionFragment : Fragment() {
         val titleView = view.findViewById<TextView>(R.id.Text)
 //        val ivPic = view.findViewById<ImageView>(R.id.ivProfileImage)
 
+        var prompt_Data = LYRICS_URL
+
         Glide.with(view.context).load(R.drawable.poerty).into(ivDaily) //Load pic into daily challenge
 
         val player = ParseUser.getCurrentUser().username as String
 
         val titleString = "Let's Type"
 
+        val rnds = (0..2).random()
+        Log.i("RANDOM", rnds.toString())
+
+        if(rnds == 0){
+            prompt_Data = LYRICS_URL
+        }else if(rnds == 1){
+            prompt_Data = POETRY_URL
+        }else{
+            prompt_Data = MOVIE_URL
+        }
+
         titleView.text = titleString + " " + player + "!"
         ivDaily.setOnClickListener(View.OnClickListener {
+            dataRetrieve(prompt_Data, "Movies")
 
-            val intent = Intent(context, ResultActivity::class.java)
-
-            context?.startActivity(intent)
         })
 
         //Set onClick  Switch
         view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener {
-            isCometetive = !isCometetive
-            Toast.makeText(requireContext(), "Switced Modes $isCometetive", Toast.LENGTH_SHORT).show()
-        }
+            isCompetetive = !isCompetetive
+            Toast.makeText(requireContext(), "Switced Modes $isCompetetive", Toast.LENGTH_SHORT).show()
 
+        }
+//
+//        viewPager.setOnClickListener {
+//            val intent = Intent(context, PlayActivity::class.java)
+//            Log.i(TAG, isCompetetive.toString())
+//            intent.putExtra("isCompetetive", isCompetetive)
+//            context?.startActivity(intent)
+//        }
 
         viewPager.apply {
             clipChildren = false  // No clipping the left and right items
@@ -94,9 +121,11 @@ class SelectionFragment : Fragment() {
 
             )
 
-        viewPager.adapter = context?.let { //Pass Context as a parameter for switching intents
+        viewPager.adapter = requireContext()?.let {
+//            isCompetetive = !isCompetetive
+            Log.i(TAG, isCompetetive.toString())//Pass Context as a parameter for switching intents
             CarouselRVAdapter(demoData as Map<String, Drawable>,
-                it
+                it, isCompetetive
             )
         }
 
@@ -111,8 +140,30 @@ class SelectionFragment : Fragment() {
 
     }
 
+    fun dataRetrieve(CATEGORY_URL: String, selection: String) {
 
+        val client = OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS).writeTimeout(100,
+            TimeUnit.SECONDS).readTimeout(300, TimeUnit.SECONDS).build()
 
+        Log.e("dataRetrieve",CATEGORY_URL)
+        val request = okhttp3.Request.Builder().url(CATEGORY_URL).build()
+        client.newCall(request).enqueue(object: Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("dataRetrieve:","FAIL")
+            }
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                if(body!=null){
+                    val jObject = JSONObject(body)
+                    val intent = Intent(context,PlayActivity::class.java)
+                    intent.putExtra("prompt",jObject.get("prompt").toString())
+                    context?.startActivity(intent)
+
+                }
+            }
+        })
+
+    }
 
     companion object {
         const val TAG = "SelectionScreenMessages"
