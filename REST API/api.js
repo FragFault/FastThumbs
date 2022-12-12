@@ -4,24 +4,25 @@ const { exit } = require("process");
 const { getEnvironmentData } = require("worker_threads");
 const { getLyrics } = require("genius-lyrics-api");
 async function getMoviePrompt(){
-    var wordRequirement = 500;
+    var wordRequirement = 70;
     var prompt ="";
     while (prompt.split(" ").length < wordRequirement){
         var randIndex = Math.floor(Math.random() * 19);
         var randPage = String(Math.floor(Math.random()*499)+1);
         request = "https://api.themoviedb.org/3/discover/movie?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US&sort_by=popularity.desc&certification=PG&include_adult=false&include_video=false&page="+randPage+"&with_watch_monetization_types=flatrate";
-        await axios.get(request) //Random Page for each request to guarantee different prompts. 
+        await axios.get(request) //Random Page for each request to guarantee different prompts.
         .then (result => {
             prompt += result.data.results[randIndex].overview+" ";
         })
         .catch(error =>{})
     }
-    prompt=prompt.replace(/[^a-zA-Z0-9 .]/gi,''); //some prompts have non ascii characters. Need to clean the data. 
-    prompt=prompt.slice(0,-1); //remove space at end of prompt. 
+    prompt=prompt.replace(/[^a-zA-Z0-9 .]/gi,''); //some prompts have non ascii characters. Need to clean the data.
+    prompt=prompt.replace(/\s+/gi," ");
+    prompt=prompt.slice(0,-1); //remove space at end of prompt.
     return prompt;
 }
 async function getLyricsPrompt(){
-    var wordRequirement = 500;
+    var wordRequirement = 70;
     var prompt = "";
     var songs = ["https://genius.com/Elton-john-im-still-standing-lyrics","https://genius.com/Elton-john-bennie-and-the-jets-lyrics","https://genius.com/Elton-john-funeral-for-a-friend-love-lies-bleeding-lyrics","https://genius.com/Elvis-presley-trouble-guitar-man-nbc-tv-special-lyrics","https://genius.com/Elvis-presley-lawdy-miss-clawdy-lyrics","https://genius.com/Elvis-presley-baby-what-you-want-me-to-do-lyrics","https://genius.com/Elvis-presley-heartbreak-hotel-lyrics"];
     while (prompt.split(" ").length < wordRequirement){
@@ -32,12 +33,18 @@ async function getLyricsPrompt(){
         });
     }
     prompt=prompt.replace(/[\n]/gi," ");
-    prompt=prompt.replace(/[^a-zA-Z0-9 .]/gi,''); //some prompts have non ascii characters. Need to clean the data. 
-    prompt=prompt.slice(0,-1); //remove space at end of prompt. 
-    return prompt;   
+    prompt=prompt.replace(/[^a-zA-Z0-9 .]/gi,''); //some prompts have non ascii characters. Need to clean the data.
+
+    prompt=prompt.replace(/Verse\s[0-9]\s*/gi,"");
+    prompt=prompt.replace(/\s*Verse\s[0-9]\s*/gi," ");
+    prompt=prompt.replace(/\s*Chorus\s*/gi," ");
+    prompt=prompt.replace(/Intro\s/gi,"");
+    prompt=prompt.replace(/\s+/gi," ");
+    prompt=prompt.slice(0,-1); //remove space at end of prompt.
+    return prompt;
 }
 async function getPoetryPrompt(){
-    var wordRequirement = 500;
+    var wordRequirement = 70;
     var prompt = "";
     var poets = ["shakespeare","poe","whitman","milton","blake","wilde"];
     while (prompt.split(" ").length < wordRequirement){
@@ -57,7 +64,8 @@ async function getPoetryPrompt(){
     }
     prompt=prompt.replace(/[^a-zA-Z0-9 .]/gi,'');
     prompt=prompt.replace(/  +/g, ' ');
-    prompt=prompt.slice(0,-1); //remove space at end of prompt. 
+    prompt=prompt.replace(/\s+/gi," ");
+    prompt=prompt.slice(0,-1); //remove space at end of prompt.
     return prompt;
 }
 const server = http.createServer((req,res) => {
@@ -73,7 +81,7 @@ const server = http.createServer((req,res) => {
                         "words": words};
             res.write(JSON.stringify(json));
             res.end();
-        } 
+        }
         if (req === '/api/getPoetryPrompt'){
             var prompt = await getPoetryPrompt();
             var words = prompt.split(" ").length;
