@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +28,6 @@ import com.example.simpletodo.Player
 //import com.codepath.asynchttpclient.RequestParams
 //import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 //import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
-import com.example.simpletodo.ResultActivity
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import okhttp3.Call
@@ -77,7 +75,7 @@ class SelectionFragment : Fragment() {
 
         var prompt_Data = LYRICS_URL
 
-        Glide.with(view.context).load(R.drawable.poerty).into(ivDaily) //Load pic into daily challenge
+        Glide.with(view.context).load(R.drawable.question_mark_2).into(ivDaily) //Load pic into daily challenge
 
         val player = ParseUser.getCurrentUser().username as String
         user = ParseUser.getCurrentUser()
@@ -104,7 +102,11 @@ class SelectionFragment : Fragment() {
 
         titleView.text = titleString + " " + player + "!"
         ivDaily.setOnClickListener(View.OnClickListener {
+
             dataRetrieve(prompt_Data, "Movies")
+            if (it != null) {
+                it.setOnClickListener(null)
+            }
 
         })
 
@@ -171,8 +173,6 @@ class SelectionFragment : Fragment() {
                         }
                     }
 
-
-
                 }
             } else {
                 Log.e(TAG, "Parse Error: ", e)
@@ -206,9 +206,6 @@ class SelectionFragment : Fragment() {
         })
 
     }
-
-
-
 
 
 }

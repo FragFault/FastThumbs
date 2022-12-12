@@ -203,7 +203,6 @@ class UserProfileFragment : Fragment() {
         }
 
 
-
     fun loadFromUri(photoUri: Uri?): Bitmap? {
         var image: Bitmap? = null
         try {

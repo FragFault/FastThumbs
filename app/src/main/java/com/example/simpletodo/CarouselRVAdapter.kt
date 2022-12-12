@@ -66,6 +66,9 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
             }
 
             dataRetrieve(prompt_Data, category)
+            if (v != null) {
+                v.setOnClickListener(null)
+            };
 
         }
     }
