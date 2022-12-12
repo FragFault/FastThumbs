@@ -71,6 +71,14 @@ class Player : ParseObject() {
         put(KEY_USERNAME, username)
     }
 
+    fun getToggle(): Boolean {
+        return getBoolean(KEY_MODE)
+    }
+
+    fun setToggle(mode: Boolean){
+        put(KEY_MODE, mode)
+    }
+
     companion object {
         const val KEY_USER = "user"
         const val KEY_USERNAME = "user"
@@ -80,5 +88,6 @@ class Player : ParseObject() {
         const val KEY_BIO = "bio"
         const val KEY_GAMES = "gamesPlayed"
         const val KEY_SPEED = "averageSpeed"
+        const val KEY_MODE = "isDarkMode"
     }
 }

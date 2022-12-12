@@ -289,6 +289,6 @@ class UserProfileFragment : Fragment() {
 
     companion object {
             const val KEY_PFP = "profilePic"
-        private const val TAG = "ProfileFragment"
+        const val TAG = "ProfileFragment"
     }
 }

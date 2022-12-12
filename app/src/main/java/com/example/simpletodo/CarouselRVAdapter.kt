@@ -1,5 +1,5 @@
-import android.content.Intent
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,16 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.codepath.asynchttpclient.AsyncHttpClient
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.R
-import com.example.simpletodo.fragments.SelectionFragment
 import okhttp3.OkHttpClient
 
 import okhttp3.*
 
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -91,7 +87,8 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
                     val intent = Intent(context,PlayActivity::class.java)
                     intent.putExtra("prompt",jObject.get("prompt").toString())
                     Log.i("Adapter", comp.toString())
-                    intent.putExtra("isCompetetive", comp)
+                    intent.putExtra("isCompetetive", true)
+                    intent.putExtra("isDaily", true)
                     context.startActivity(intent)
 
                 }

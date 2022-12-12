@@ -21,23 +21,16 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.codepath.asynchttpclient.AsyncHttpClient
-import com.codepath.asynchttpclient.RequestParams
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
-import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
 import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.R
-import com.example.simpletodo.ResultActivity
 import com.parse.ParseUser
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import kotlin.random.Random
 
 
 class SelectionFragment : Fragment() {
@@ -47,7 +40,12 @@ class SelectionFragment : Fragment() {
     private val MOVIE_URL =  "http://52.87.203.225/api/getMoviePrompt"
 
     // TODO: Rename and change types of parameters
-    private var isCompetetive: Boolean = false
+
+    companion object {
+        const val TAG = "SelectionScreenMessages"
+        @JvmStatic var isCompetetive: Boolean = false
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,25 +84,17 @@ class SelectionFragment : Fragment() {
             prompt_Data = MOVIE_URL
         }
 
+        view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener {
+            isCompetetive = !isCompetetive
+//            Toast.makeText(requireContext(), "Switced Modes $isCompetetive", Toast.LENGTH_SHORT).show()
+
+        }
+
         titleView.text = titleString + " " + player + "!"
         ivDaily.setOnClickListener(View.OnClickListener {
             dataRetrieve(prompt_Data, "Movies")
 
         })
-
-        //Set onClick  Switch
-        view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener {
-            isCompetetive = !isCompetetive
-            Toast.makeText(requireContext(), "Switced Modes $isCompetetive", Toast.LENGTH_SHORT).show()
-
-        }
-//
-//        viewPager.setOnClickListener {
-//            val intent = Intent(context, PlayActivity::class.java)
-//            Log.i(TAG, isCompetetive.toString())
-//            intent.putExtra("isCompetetive", isCompetetive)
-//            context?.startActivity(intent)
-//        }
 
         viewPager.apply {
             clipChildren = false  // No clipping the left and right items
@@ -123,11 +113,13 @@ class SelectionFragment : Fragment() {
 
         viewPager.adapter = requireContext()?.let {
 //            isCompetetive = !isCompetetive
+
             Log.i(TAG, isCompetetive.toString())//Pass Context as a parameter for switching intents
             CarouselRVAdapter(demoData as Map<String, Drawable>,
                 it, isCompetetive
             )
         }
+
 
         //Makes the Carousel slide and sets animations
         val compositePageTransformer = CompositePageTransformer()
@@ -165,9 +157,7 @@ class SelectionFragment : Fragment() {
 
     }
 
-    companion object {
-        const val TAG = "SelectionScreenMessages"
-    }
+
 
 
 
