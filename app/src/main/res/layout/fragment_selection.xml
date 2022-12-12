@@ -10,39 +10,62 @@
 
 
     <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Hone your typing prowess in these themes here to stay!"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Try your skill at a daily randomly generated prompt!!"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <TextView
         android:id="@+id/casualText"
         android:layout_width="68dp"
         android:layout_height="27dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="25dp"
         android:text="Casual"
         android:textSize="19dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/daily"
+        app:layout_constraintBottom_toTopOf="@+id/view_pager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.162" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/competetiveText"
         android:layout_width="115dp"
         android:layout_height="30dp"
-        android:layout_marginTop="25dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="33dp"
         android:text="Competetive"
         android:textSize="19dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/daily"
+        app:layout_constraintBottom_toTopOf="@+id/view_pager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="300dp"
 
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="49dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -62,33 +85,31 @@
 
     </RelativeLayout>
 
-
     <Switch
         android:id="@+id/modeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:scaleX="2.5"
         android:scaleY="2.5"
-        app:layout_constraintBottom_toTopOf="@+id/daily"
+        app:layout_constraintBottom_toTopOf="@+id/view_pager"
         app:layout_constraintEnd_toStartOf="@+id/competetiveText"
         app:layout_constraintHorizontal_bias="0.65"
         app:layout_constraintStart_toEndOf="@+id/casualText"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <ImageView
         android:id="@+id/daily"
         android:layout_width="259dp"
         android:layout_height="152dp"
         android:layout_marginStart="76dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="76dp"
-        android:layout_marginBottom="336dp"
         android:contentDescription="TODO"
         android:tint="#B0000000"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
@@ -111,9 +132,10 @@
         android:layout_width="218dp"
         android:layout_height="211dp"
         android:layout_marginStart="96dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="97dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/daily"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
