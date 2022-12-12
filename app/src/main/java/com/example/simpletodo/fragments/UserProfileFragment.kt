@@ -90,8 +90,6 @@ class UserProfileFragment : Fragment() {
 
 
         view.findViewById<Button>(R.id.submit).setOnClickListener {
-
-            Toast.makeText(requireContext(), "bio" + bio.text, Toast.LENGTH_SHORT).show()
             val query = ParseQuery.getQuery(Player::class.java)
             query.include(Player.KEY_USER)
             query.whereEqualTo(Player.KEY_USER, user)
@@ -109,7 +107,7 @@ class UserProfileFragment : Fragment() {
                                 Toast.makeText(requireContext(), "Error: Something went wrong trying to save your profile changes!", Toast.LENGTH_SHORT).show()
                             } else {
                                 Log.i(TAG, "Successfully saved changes")
-                                Toast.makeText(requireContext(), "Profile Update!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -168,22 +166,40 @@ class UserProfileFragment : Fragment() {
     fun queryGameLogs(){
         val query = ParseQuery.getQuery(GameResults::class.java)
         query.include(GameResults.KEY_USER)
+        query.orderByDescending("createdAt")
         query.whereEqualTo(GameResults.KEY_USER, user)
-        query.findInBackground{ detail, e ->
-            if (e == null) {
-                Log.d(TAG, "Objects: $detail")
-                for (element in detail) {
-//                    Log.i(TAG, "this is the bio" + element.getDate().toString())
-
-                    allGameLogs.addAll(detail)
-                    adapter.notifyDataSetChanged()
-                }
-            }else {
-                        Log.i("Fragment:","GameLog is null")
+        query.findInBackground( object: FindCallback<GameResults> {
+            override fun done(detail: MutableList<GameResults>?, e: ParseException?) {
+                if (e == null) {
+                    Log.d(TAG, "Objects: $detail")
+//                    for (element in detail) {
+////                    Log.i(TAG, "this is the bio" + element.getDate().toString())
+//
+//                        allGameLogs.addAll(detail)
+//                        adapter.notifyDataSetChanged()
+//                    }
+                    if (detail?.size!! > 3) {
+                        allGameLogs.addAll(detail.slice(0 .. 2 ))
+                        adapter.notifyDataSetChanged()
+                        Log.i(TAG, "more than 3")
+                    } else if (detail?.size!! > 2) {
+                        allGameLogs.addAll(detail.slice(0 .. 1 ))
+                        adapter.notifyDataSetChanged()
+                        Log.i(TAG, "more than 2")
+                    } else if (detail?.size!! > 1) {
+                        allGameLogs.addAll(detail.slice(0 .. 0 ))
+                        adapter.notifyDataSetChanged()
+                        Log.i(TAG, "more than 1")
+                    } else {
+                        Toast.makeText(requireContext(), "Play a game to witness your own success here!", Toast.LENGTH_SHORT).show()
                     }
+
+                } else {
+                    Log.i("Fragment:", "GameLog is null")
                 }
+            }
 
-
+        })
         }
 
 
@@ -252,7 +268,6 @@ class UserProfileFragment : Fragment() {
             user.saveInBackground { e ->
                 if (e == null) {
                     //Save successfull
-                    Toast.makeText(requireContext(), "Profile picture updated!", Toast.LENGTH_SHORT).show()
                     Glide.with(requireContext())
                         .load(user.getParseFile(KEY_PFP)?.url)
                         .transform(CircleCrop())
@@ -260,7 +275,6 @@ class UserProfileFragment : Fragment() {
                 } else {
                     // Something went wrong while saving
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Error: Something went wrong trying to save your profile image!", Toast.LENGTH_SHORT).show()
                 }
             }
 

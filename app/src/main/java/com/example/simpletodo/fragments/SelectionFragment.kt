@@ -23,6 +23,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.R
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.example.simpletodo.Player
+//import com.codepath.asynchttpclient.AsyncHttpClient
+//import com.codepath.asynchttpclient.RequestParams
+//import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
+//import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
+import com.example.simpletodo.ResultActivity
+import com.parse.ParseQuery
 import com.parse.ParseUser
 import okhttp3.Call
 import okhttp3.Callback
@@ -38,6 +46,8 @@ class SelectionFragment : Fragment() {
     private val LYRICS_URL = "http://52.87.203.225/api/getLyricsPrompt"
     private val POETRY_URL = "https://52/.87/.203/.225/api/getPoetryPrompt"
     private val MOVIE_URL =  "http://52.87.203.225/api/getMoviePrompt"
+    lateinit var profilePic : ImageView
+    lateinit var user : ParseUser
 
     // TODO: Rename and change types of parameters
 
@@ -63,13 +73,15 @@ class SelectionFragment : Fragment() {
         val ivDaily = view.findViewById<ImageView>(R.id.daily)
         val viewPager = view.findViewById<ViewPager2>(R.id.view_pager)
         val titleView = view.findViewById<TextView>(R.id.Text)
-//        val ivPic = view.findViewById<ImageView>(R.id.ivProfileImage)
+        profilePic = view.findViewById<ImageView>(R.id.ivProfileImage)
 
         var prompt_Data = LYRICS_URL
 
         Glide.with(view.context).load(R.drawable.poerty).into(ivDaily) //Load pic into daily challenge
 
         val player = ParseUser.getCurrentUser().username as String
+        user = ParseUser.getCurrentUser()
+        profiledetails()
 
         val titleString = "Let's Type"
 
@@ -129,6 +141,44 @@ class SelectionFragment : Fragment() {
             page.scaleY = (0.80f + r * 0.20f)
         }
         viewPager.setPageTransformer(compositePageTransformer)
+
+    }
+    fun profiledetails() {
+        val query = ParseQuery.getQuery(Player::class.java)
+        query.include(Player.KEY_USER)
+        query.whereEqualTo(Player.KEY_USER, user)
+        query.findInBackground { detail , e ->
+            if (e == null) {
+                Log.d(TAG, "Objects: $detail")
+                for (element in detail) {
+                    Log.i(TAG, "this is the bio" + element.getBio().toString())
+                    element.getBio()
+
+                    Log.i(TAG, getContext().toString())
+                    if (element.getPImage() != null) {
+                        activity?.let {
+                            Glide.with(it)
+                                .load(element.getPImage()?.url)
+                                .transform(CircleCrop())
+                                .into(profilePic)
+                        }
+                    } else {
+                        activity?.let {
+                            Glide.with(it)
+                                .load(R.drawable.instagram_user_filled_24)
+                                .transform(CircleCrop())
+                                .into(profilePic)
+                        }
+                    }
+
+
+
+                }
+            } else {
+                Log.e(TAG, "Parse Error: ", e)
+            }
+        }
+        Log.e(TAG, "This works")
 
     }
 

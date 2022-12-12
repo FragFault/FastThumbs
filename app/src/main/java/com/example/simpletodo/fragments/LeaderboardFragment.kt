@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -73,16 +74,58 @@ class LeaderboardFragment : Fragment() {
                             Glide.with(firstPicture.context)
                                 .load(players.get(0).getPImage()?.url).circleCrop()
                                 .into(firstPicture)
+                            firstPicture.setOnClickListener{
+                                val player = players[0]
+                                val userID=player.getUser()?.objectId
+                                val username = player.getUser()?.username
+
+                                val bundle=Bundle()
+                                bundle.putString("userId", userID)
+                                bundle.putString("username", username)
+                                val fragObj = OtherProfileFragment()
+                                fragObj.setArguments(bundle)
+                                (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                                    .replace(R.id.flContainer,fragObj)
+                                    .commit()
+                            }
                             firstName.text = players.get(0).getUser()?.username as String
                             firstPoints.text = players.get(0).getTotal().toString() + " Pts"
                         }
                         if(players.size>1){
                             Glide.with(firstPicture.context).load(players.get(1).getPImage()?.url).circleCrop().into(secondPicture)
+                            secondPicture.setOnClickListener{
+                                val player = players[1]
+                                val userID=player.getUser()?.objectId
+                                val username = player.getUser()?.username
+
+                                val bundle=Bundle()
+                                bundle.putString("userId", userID)
+                                bundle.putString("username", username)
+                                val fragObj = OtherProfileFragment()
+                                fragObj.setArguments(bundle)
+                                (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                                    .replace(R.id.flContainer,fragObj)
+                                    .commit()
+                            }
                             secondName.text = players.get(1).getUser()?.username as String
                             secondPoints.text = players.get(1).getTotal().toString()+" Pts"
                         }
                         if(players.size>2){
                             Glide.with(firstPicture.context).load(players.get(2).getPImage()?.url).circleCrop().into(thirdPicture)
+                            thirdPicture.setOnClickListener{
+                                val player = players[2]
+                                val userID=player.getUser()?.objectId
+                                val username = player.getUser()?.username
+
+                                val bundle=Bundle()
+                                bundle.putString("userId", userID)
+                                bundle.putString("username", username)
+                                val fragObj = OtherProfileFragment()
+                                fragObj.setArguments(bundle)
+                                (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                                    .replace(R.id.flContainer,fragObj)
+                                    .commit()
+                            }
                             thirdName.text = players.get(2).getUser()?.username as String
                             thirdPoints.text = players.get(2).getTotal().toString()+" Pts"
                         }
