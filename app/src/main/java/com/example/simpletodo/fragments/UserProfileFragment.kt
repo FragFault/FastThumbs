@@ -191,7 +191,7 @@ class UserProfileFragment : Fragment() {
                         adapter.notifyDataSetChanged()
                         Log.i(TAG, "more than 1")
                     } else {
-                        Toast.makeText(requireContext(), "Play a game to witness your own success here!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireContext(), "Play a game to witness your own success here!", Toast.LENGTH_SHORT).show()
                     }
 
                 } else {

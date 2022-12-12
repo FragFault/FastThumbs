@@ -39,7 +39,8 @@ class SettingsActivity() : AppCompatActivity() {
         val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
         val settingsPage = findViewById<View>(R.id.SettingsPage)
 
-        modeSwitch.isChecked = checkSwitch()
+
+        checkSwitch()
 
         //        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
 //            .setSmallIcon(R.drawable.logo)
@@ -163,17 +164,15 @@ class SettingsActivity() : AppCompatActivity() {
         Log.i("Settings", user.toString())
         query.findInBackground { detail, e ->
             if (e == null) {
-                Log.d(UserProfileFragment.TAG, "Objects: $detail")
+                Log.d("Settings", "Objects: $detail")
                 for (element in detail) {
                     element.setToggle(!element.getToggle())
 
                     element.saveInBackground { exception ->
                         if (exception != null) {
                             Log.e("Settings", "Error while saving changes")
-                            Toast.makeText(this, "Error: Something went wrong trying to save your profile changes!", Toast.LENGTH_SHORT).show()
                         } else {
                             Log.i("Settings", "Successfully saved changes")
-                            Toast.makeText(this, "Profile Update!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -191,25 +190,29 @@ class SettingsActivity() : AppCompatActivity() {
          }
     }
 
-    private fun checkSwitch(): Boolean {
+    private fun checkSwitch() {
         val query = ParseQuery.getQuery(Player::class.java)
         val user = ParseUser.getCurrentUser()
-        var mode: Boolean = false
+        var mode: Boolean = null == true
 
         query.include(Player.KEY_USER)
         query.whereEqualTo(Player.KEY_USER, user)
+        val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
         query.findInBackground { detail, e ->
             if (e == null) {
-                Log.d(UserProfileFragment.TAG, "Objects: $detail")
+                Log.d("Settings", "Objects: $detail")
                 for (element in detail) {
-                    Log.i(UserProfileFragment.TAG, "this is the bio" + element.getBio().toString())
+
                     mode = element.getToggle()
+                    modeSwitch.isChecked = mode
+                    Log.i("Settings", "The switch state $mode")
 
                 }
+
             }
+
         }
 
-        return mode
     }
 
     private fun logoutUser() {
