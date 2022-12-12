@@ -166,7 +166,7 @@ class OtherProfileFragment : Fragment() {
                         allGameLogs.addAll(detail.slice(0 .. 0 ))
                         adapter.notifyDataSetChanged()
                     }else {
-                        Toast.makeText(requireContext(), "Play a game to witness your own success!", Toast.LENGTH_SHORT).show()
+                        Log.i("Fragment:", "GameLog is null")
                     }
 
                 } else {

@@ -90,8 +90,6 @@ class UserProfileFragment : Fragment() {
 
 
         view.findViewById<Button>(R.id.submit).setOnClickListener {
-
-            Toast.makeText(requireContext(), "bio" + bio.text, Toast.LENGTH_SHORT).show()
             val query = ParseQuery.getQuery(Player::class.java)
             query.include(Player.KEY_USER)
             query.whereEqualTo(Player.KEY_USER, user)
@@ -109,7 +107,7 @@ class UserProfileFragment : Fragment() {
                                 Toast.makeText(requireContext(), "Error: Something went wrong trying to save your profile changes!", Toast.LENGTH_SHORT).show()
                             } else {
                                 Log.i(TAG, "Successfully saved changes")
-                                Toast.makeText(requireContext(), "Profile Update!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -193,7 +191,7 @@ class UserProfileFragment : Fragment() {
                         adapter.notifyDataSetChanged()
                         Log.i(TAG, "more than 1")
                     } else {
-                        Toast.makeText(requireContext(), "Play a game to witness your own success!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Play a game to witness your own success here!", Toast.LENGTH_SHORT).show()
                     }
 
                 } else {
@@ -270,7 +268,6 @@ class UserProfileFragment : Fragment() {
             user.saveInBackground { e ->
                 if (e == null) {
                     //Save successfull
-                    Toast.makeText(requireContext(), "Profile picture updated!", Toast.LENGTH_SHORT).show()
                     Glide.with(requireContext())
                         .load(user.getParseFile(KEY_PFP)?.url)
                         .transform(CircleCrop())
@@ -278,7 +275,6 @@ class UserProfileFragment : Fragment() {
                 } else {
                     // Something went wrong while saving
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Error: Something went wrong trying to save your profile image!", Toast.LENGTH_SHORT).show()
                 }
             }
 
