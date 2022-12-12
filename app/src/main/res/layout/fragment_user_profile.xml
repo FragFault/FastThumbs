@@ -160,7 +160,7 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="UPDATE PROFILE"
+        android:text="UPDATE PROFILE PICTURE / BIO"
         app:layout_constraintBottom_toTopOf="@+id/profilePic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
