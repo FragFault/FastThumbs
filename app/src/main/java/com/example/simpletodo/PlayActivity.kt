@@ -3,12 +3,13 @@ package com.example.simpletodo
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-
 import android.os.CountDownTimer
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -44,9 +45,6 @@ class PlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
 
-        val thePrompt = findViewById<TextView>(R.id.tvPrompt)
-        val test = findViewById<TextView>(R.id.tvTitle)
-
         ParseObject.registerSubclass(GameResults::class.java)
         ParseObject.registerSubclass(Player::class.java)
 
@@ -57,19 +55,28 @@ class PlayActivity : AppCompatActivity() {
 
         val extras = intent.extras
         if (extras != null) {
-            val value = extras.getString("prompt")
-            val value2 = extras.getBoolean("isCompetetive")
-
-            Log.i("PlayScreenInfo", value2.toString())
-
-            //The key argument here must match that used in the other activity
-//            test.text = value2.toString()
-
-        // Introduce keyboard to user to start typing the prompt
-            tvPrompt.text = value
-            prompt = value!!
+            //The key arguments here must match that used in the other activity
+            val extractedString = extras.getString("prompt")
+            tvPrompt.text = extractedString
+            prompt = extractedString!!
             spannable = SpannableStringBuilder(prompt)
+            /*
+            extractedString = extras.getString("category")
+            category = extractedString
+            val extractedBoolean = extras.getBoolean("competitive")
+            competitive = extractedBoolean
+            extractedBoolean = extras.getBoolean("daily")
+            daily = extractedBoolean
+            */
         }
+
+        // Make first character highlighted for user to know where to type
+        spannable.setSpan(BackgroundColorSpan(Color.YELLOW),
+            0,
+            1,
+            Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+        )
+        tvPrompt.text = spannable
 
         // Variable for keyboard
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -90,7 +97,6 @@ class PlayActivity : AppCompatActivity() {
             }
             override fun onFinish() {
                 tvTimeLeft.text = "STOP TYPING!"
-                Toast.makeText(this@PlayActivity, "OUT OF TIME!!!", Toast.LENGTH_SHORT).show()
 
                 calculateResults()
                 submitGameResults(points, speed, user, competitive, accuracy, daily, category)
@@ -111,6 +117,7 @@ class PlayActivity : AppCompatActivity() {
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (event != null) {
+            // If user input matched expected character, move on to next character
             if((event.unicodeChar).toChar().toString() == prompt.substring(currentLetter,currentLetter+1)) {
                 currentLetter += 1
 
@@ -118,18 +125,19 @@ class PlayActivity : AppCompatActivity() {
                     wordsPerMinute += 1
                 }
 
+                var tvPrompt = findViewById<TextView>(R.id.tvPrompt)
+
                 spannable.setSpan(ForegroundColorSpan(Color.GREEN),
                     0, // start
                     currentLetter, // char the player is expected to type
                     Spannable.SPAN_EXCLUSIVE_INCLUSIVE
                 )
-                var tvPrompt = findViewById<TextView>(R.id.tvPrompt)
+
                 tvPrompt.text = spannable
 
-                // IF PROMPT IS FULLY COMPLETED, FINISH GAME
+                // If prompt is fully completed, finish game
                 if(currentLetter == prompt.length) {
                     timer.cancel()
-                    Toast.makeText(this, "GAME OVER! Nice typing!", Toast.LENGTH_SHORT).show()
 
                     // Account for last word character typed
                     wordsPerMinute += 1
@@ -143,6 +151,21 @@ class PlayActivity : AppCompatActivity() {
                     imm.hideSoftInputFromWindow(etKeyboardView.windowToken, 0)
 
                     goToResultsActivity()
+                }
+                else {
+                    // Reset previously highlighted characters
+                    spannable.setSpan(BackgroundColorSpan(Color.TRANSPARENT),
+                        0,
+                        currentLetter,
+                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                    )
+                    // Highlight the character the user is expected to type
+                    spannable.setSpan(BackgroundColorSpan(Color.YELLOW),
+                        currentLetter,
+                        currentLetter+1,
+                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                    )
+                    tvPrompt.text = spannable
                 }
             }
             else {
@@ -182,10 +205,12 @@ class PlayActivity : AppCompatActivity() {
             }
             else {
                 // No errors
-                //Toast.makeText(this, "SAVED TO DATABASE", Toast.LENGTH_SHORT).show()
             }
         }
-        updateOverallPlayerStats()
+        // If the game isn't competitive, then it doesn't count towards player stats
+        if (competitive) {
+            updateOverallPlayerStats()
+        }
     }
 
     fun updateOverallPlayerStats() {
@@ -210,7 +235,6 @@ class PlayActivity : AppCompatActivity() {
                         }
                         else {
                             // No error saving to Players table
-                            // Toast.makeText(this, "USER POINTS SAVED TO DATABASE", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
