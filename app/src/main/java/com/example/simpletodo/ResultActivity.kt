@@ -1,12 +1,11 @@
 package com.example.simpletodo
 
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.parse.ParseQuery
 import com.parse.ParseUser
@@ -19,6 +18,9 @@ class ResultActivity: AppCompatActivity() {
 
         val conBtn = findViewById<Button>(R.id.conBtn).setOnClickListener {
             goToMainActivity()
+        }
+        val shareBtn = findViewById<Button>(R.id.shareBtn).setOnClickListener{
+            shareOnTwitter()
         }
 
         queryPosts()
@@ -65,24 +67,14 @@ class ResultActivity: AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     fun shareOnTwitter() {
-        val pm = packageManager
-        try {
-            val waIntent = Intent(Intent.ACTION_SEND)
-            waIntent.type = "text/plain"
-            val text = "Insert Tweet Here"
-            val info = pm.getPackageInfo("com.twitter.android", PackageManager.GET_META_DATA)
-            //Check if package exists or not. If not then code
-            //in catch block will be called
-            waIntent.setPackage("com.twitter.android")
-            waIntent.putExtra(Intent.EXTRA_TEXT, text)
-            startActivity(Intent.createChooser(waIntent, "Share with"))
-        } catch (e: PackageManager.NameNotFoundException) {
-            Toast.makeText(this, "Twitter not Installed", Toast.LENGTH_SHORT)
-                .show()
-            return
-        }
-        return
+        val sendIntent = Intent(Intent.ACTION_SEND)
+        val textSh = "FASTTHUMBS\nToday's type Session\nSpeed: " + findViewById<TextView>(R.id.speedRes).text.toString() + "\n" +
+                "Accuracy: " + findViewById<TextView>(R.id.accRes).text.toString()
+        sendIntent.putExtra(Intent.EXTRA_TEXT, textSh)
+        sendIntent.type = "image/jpg"
+        startActivity(Intent.createChooser(sendIntent, "Share with"))
     }
 
     companion object{

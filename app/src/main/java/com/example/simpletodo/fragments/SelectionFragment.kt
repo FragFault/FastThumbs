@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.simpletodo.PlayDailyActivity
 //import com.codepath.asynchttpclient.AsyncHttpClient
 //import com.codepath.asynchttpclient.RequestParams
 //import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
@@ -67,7 +68,7 @@ class SelectionFragment : Fragment() {
         titleView.text = titleString + " " + player + "!"
         ivDaily.setOnClickListener(View.OnClickListener {
 
-            val intent = Intent(context, ResultActivity::class.java)
+            val intent = Intent(context, PlayDailyActivity::class.java)
 
             context?.startActivity(intent)
         })
