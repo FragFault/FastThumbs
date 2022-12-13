@@ -456,3 +456,13 @@ On BOTH pages:
 - [x] User can see the speed & accuracy from game just played.
 - [x] User can see their score earned from game just played. (If applicable)
 - [x] User can move to level select screen.
+
+## Fast_Thumbs GIF SPRINT 4
+<img src='sprint4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<h2>Functionality Added</h2>
+
+- [x] Signup now creates user in Players Table
+- [x] Game tracks competitive or casual on PlayActivity
+- [x] Profile Picture appears on home screen
+- [x] Daily challenge for random promtpts and tracking of daily challenge
+- [x] clickable top 3 on leaderboard
