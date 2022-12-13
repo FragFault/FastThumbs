@@ -9,6 +9,7 @@ class   FastThumbsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         ParseObject.registerSubclass(Player::class.java)
+        ParseObject.registerSubclass(GameResults::class.java)
         Parse.initialize(
             Parse.Configuration.Builder(this)
                 .applicationId(getString(R.string.back4app_app_id))

@@ -62,4 +62,7 @@ dependencies {
     implementation 'jp.co.cyberagent.android:gpuimage:2.0.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
+
+    //dependency for circular imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

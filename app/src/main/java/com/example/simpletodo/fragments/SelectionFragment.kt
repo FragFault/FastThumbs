@@ -83,8 +83,10 @@ class SelectionFragment : Fragment() {
 
         val titleString = "Let's Type"
 
+
         val rnds = (0..2).random()
         Log.i("RANDOM", rnds.toString())
+
 
         if(rnds == 0){
             prompt_Data = LYRICS_URL
