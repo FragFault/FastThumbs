@@ -21,11 +21,8 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.PlayDailyActivity
-//import com.codepath.asynchttpclient.AsyncHttpClient
-//import com.codepath.asynchttpclient.RequestParams
-//import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
-//import com.codepath.asynchttpclient.callback.TextHttpResponseHandler
 import com.example.simpletodo.R
 import com.example.simpletodo.ResultActivity
 import com.parse.ParseUser
