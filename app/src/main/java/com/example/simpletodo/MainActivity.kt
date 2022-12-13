@@ -10,8 +10,10 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Switch
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -19,6 +21,8 @@ import com.example.simpletodo.fragments.LeaderboardFragment
 import com.example.simpletodo.fragments.UserProfileFragment
 import com.example.simpletodo.fragments.SelectionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.parse.ParseQuery
+import com.parse.ParseUser
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +33,7 @@ open class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         createNotificationChannel()
+        checkMode()
 
         val fragmentManager: FragmentManager = supportFragmentManager
 
@@ -62,6 +67,33 @@ open class MainActivity : AppCompatActivity() {
         }
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.action_home
 
+    }
+
+    private fun checkMode(){
+        val query = ParseQuery.getQuery(Player::class.java)
+        val user = ParseUser.getCurrentUser()
+        var mode: Boolean = false
+
+        query.include(Player.KEY_USER)
+        query.whereEqualTo(Player.KEY_USER, user)
+
+        query.findInBackground { detail, e ->
+            if (e == null) {
+                Log.d("Main", "Objects: $detail")
+                for (element in detail) {
+
+                    mode = element.getToggle()
+                    if(mode){
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }else{
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
+
+                }
+
+            }
+
+        }
     }
 
     private  fun createNotificationChannel(){

@@ -40,6 +40,14 @@ class Player : ParseObject() {
         put(KEY_TOTAL, points)
     }
 
+    fun getSpeed(): Number? {
+        return getNumber(KEY_SPEED)
+    }
+
+    fun setSpeed(speed: Number){
+        put(KEY_SPEED, speed)
+    }
+
     fun getBio(): String? {
         return getString(KEY_BIO)
     }
@@ -55,13 +63,31 @@ class Player : ParseObject() {
     fun setGamesPlayed(games: Number){
         put(KEY_GAMES, games)
     }
+    fun getUsername(): String? {
+        return getString(KEY_USERNAME)
+    }
+
+    fun setUsername(username: String){
+        put(KEY_USERNAME, username)
+    }
+
+    fun getToggle(): Boolean {
+        return getBoolean(KEY_MODE)
+    }
+
+    fun setToggle(mode: Boolean){
+        put(KEY_MODE, mode)
+    }
 
     companion object {
         const val KEY_USER = "user"
+        const val KEY_USERNAME = "user"
         const val KEY_IMAGE = "profilePic"
         const val KEY_ACCURACY = "averageAcc"
         const val KEY_TOTAL = "totalPoints"
         const val KEY_BIO = "bio"
         const val KEY_GAMES = "gamesPlayed"
+        const val KEY_SPEED = "averageSpeed"
+        const val KEY_MODE = "isDarkMode"
     }
 }
