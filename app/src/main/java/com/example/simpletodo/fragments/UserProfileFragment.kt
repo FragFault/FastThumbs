@@ -191,7 +191,7 @@ class UserProfileFragment : Fragment() {
                         adapter.notifyDataSetChanged()
                         Log.i(TAG, "more than 1")
                     } else {
-                        Toast.makeText(requireContext(), "Play a game to witness your own success here!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireContext(), "Play a game to witness your own success here!", Toast.LENGTH_SHORT).show()
                     }
 
                 } else {
@@ -201,7 +201,6 @@ class UserProfileFragment : Fragment() {
 
         })
         }
-
 
 
     fun loadFromUri(photoUri: Uri?): Bitmap? {
@@ -303,6 +302,6 @@ class UserProfileFragment : Fragment() {
 
     companion object {
             const val KEY_PFP = "profilePic"
-        private const val TAG = "ProfileFragment"
+        const val TAG = "ProfileFragment"
     }
 }

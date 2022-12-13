@@ -125,7 +125,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/daily"
         app:layout_constraintEnd_toEndOf="@+id/daily"
         app:layout_constraintTop_toTopOf="@+id/daily"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.872" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

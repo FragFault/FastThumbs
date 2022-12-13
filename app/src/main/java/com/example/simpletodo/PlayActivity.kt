@@ -3,6 +3,8 @@ package com.example.simpletodo
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+
 import android.os.CountDownTimer
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -42,6 +44,9 @@ class PlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
 
+        val thePrompt = findViewById<TextView>(R.id.tvPrompt)
+        val test = findViewById<TextView>(R.id.tvTitle)
+
         ParseObject.registerSubclass(GameResults::class.java)
         ParseObject.registerSubclass(Player::class.java)
 
@@ -49,10 +54,18 @@ class PlayActivity : AppCompatActivity() {
         var tvPrompt = findViewById<TextView>(R.id.tvPrompt)
         var tvErrors = findViewById<TextView>(R.id.tvErrors)
 
+
         val extras = intent.extras
         if (extras != null) {
             val value = extras.getString("prompt")
+            val value2 = extras.getBoolean("isCompetetive")
+
+            Log.i("PlayScreenInfo", value2.toString())
+
             //The key argument here must match that used in the other activity
+//            test.text = value2.toString()
+
+        // Introduce keyboard to user to start typing the prompt
             tvPrompt.text = value
             prompt = value!!
             spannable = SpannableStringBuilder(prompt)

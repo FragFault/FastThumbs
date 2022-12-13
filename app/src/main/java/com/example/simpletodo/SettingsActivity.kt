@@ -18,12 +18,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentManager
-import com.parse.FindCallback
-import com.parse.ParseException
-import com.parse.ParseQuery
-import com.parse.ParseUser
-import java.util.*
+import com.example.simpletodo.fragments.UserProfileFragment
+import com.parse.*
 
 
 class SettingsActivity() : AppCompatActivity() {
@@ -40,6 +38,9 @@ class SettingsActivity() : AppCompatActivity() {
         val fragmentManager: FragmentManager = supportFragmentManager
         val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
         val settingsPage = findViewById<View>(R.id.SettingsPage)
+
+
+        checkSwitch()
 
         //        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
 //            .setSmallIcon(R.drawable.logo)
@@ -68,6 +69,7 @@ class SettingsActivity() : AppCompatActivity() {
         findViewById<Switch>(R.id.darkModeSwitch).setOnClickListener {
             var modeSwitchState = modeSwitch.isChecked
             switchMode(modeSwitchState)
+            switchState()
         }
 
         findViewById<Button>(R.id.logoutButton).setOnClickListener{
@@ -153,6 +155,33 @@ class SettingsActivity() : AppCompatActivity() {
         }
     }
 
+    private fun switchState(){
+        val query = ParseQuery.getQuery(Player::class.java)
+        val user = ParseUser.getCurrentUser()
+
+//        query.include(Player.KEY_USER)
+        query.whereEqualTo(Player.KEY_USER, user)
+        Log.i("Settings", user.toString())
+        query.findInBackground { detail, e ->
+            if (e == null) {
+                Log.d("Settings", "Objects: $detail")
+                for (element in detail) {
+                    element.setToggle(!element.getToggle())
+
+                    element.saveInBackground { exception ->
+                        if (exception != null) {
+                            Log.e("Settings", "Error while saving changes")
+                        } else {
+                            Log.i("Settings", "Successfully saved changes")
+                        }
+                    }
+                }
+            } else {
+               Log.e("Settings", "Parse Error: ", e)
+            }
+        }
+    }
+
     private fun switchMode(theme: Boolean) {
          if(theme){
              AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -160,6 +189,32 @@ class SettingsActivity() : AppCompatActivity() {
              AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
          }
     }
+
+    private fun checkSwitch() {
+        val query = ParseQuery.getQuery(Player::class.java)
+        val user = ParseUser.getCurrentUser()
+        var mode: Boolean = null == true
+
+        query.include(Player.KEY_USER)
+        query.whereEqualTo(Player.KEY_USER, user)
+        val modeSwitch = findViewById<Switch>(R.id.darkModeSwitch)
+        query.findInBackground { detail, e ->
+            if (e == null) {
+                Log.d("Settings", "Objects: $detail")
+                for (element in detail) {
+
+                    mode = element.getToggle()
+                    modeSwitch.isChecked = mode
+                    Log.i("Settings", "The switch state $mode")
+
+                }
+
+            }
+
+        }
+
+    }
+
     private fun logoutUser() {
         ParseUser.logOutInBackground { e ->
             if (e == null) {
