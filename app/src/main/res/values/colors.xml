@@ -18,6 +18,8 @@
     <color name="medium_gray_50">#80aab8c2</color>
     <color name="light_gray">#ffccd6dd</color>
     <color name="medium_red">#ffe0245e</color>
+    <color name="medium_red_less">#ff4274</color>
+    <color name="medium_red_much_less">#ff92af</color>
     <color name="medium_red_30">#4de0245e</color>
     <color name="medium_red_50">#80e0245e</color>
     <color name="twitter_blue">#ff1da1f2</color>

@@ -79,6 +79,14 @@ class Player : ParseObject() {
         put(KEY_MODE, mode)
     }
 
+    fun getIsCompetitive(): Boolean? {
+        return getBoolean(KEY_ISCOMPETETIVE)
+    }
+
+    fun setIsCompetitve(isCompetitive: Boolean) {
+        put(KEY_ISCOMPETETIVE, isCompetitive)
+    }
+
     companion object {
         const val KEY_USER = "user"
         const val KEY_USERNAME = "user"
@@ -89,5 +97,6 @@ class Player : ParseObject() {
         const val KEY_GAMES = "gamesPlayed"
         const val KEY_SPEED = "averageSpeed"
         const val KEY_MODE = "isDarkMode"
+        const val KEY_ISCOMPETETIVE = "isCompetitive"
     }
 }

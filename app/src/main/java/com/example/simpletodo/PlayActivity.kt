@@ -34,9 +34,9 @@ class PlayActivity : AppCompatActivity() {
 
     // Variables about game passed from selectLevel Screen
     var prompt = "test"
-    val category = "poetry"
-    val competitive:Boolean = true
-    val daily:Boolean = false
+    var category = "poetry"
+    var competitive:Boolean = true
+    var daily:Boolean = false
 
     //Set span text for prompt
     var spannable = SpannableStringBuilder(prompt)
@@ -52,22 +52,19 @@ class PlayActivity : AppCompatActivity() {
         var tvPrompt = findViewById<TextView>(R.id.tvPrompt)
         var tvErrors = findViewById<TextView>(R.id.tvErrors)
 
-
         val extras = intent.extras
         if (extras != null) {
             //The key arguments here must match that used in the other activity
-            val extractedString = extras.getString("prompt")
+            var extractedString = extras.getString("prompt")
             tvPrompt.text = extractedString
             prompt = extractedString!!
             spannable = SpannableStringBuilder(prompt)
-            /*
             extractedString = extras.getString("category")
-            category = extractedString
-            val extractedBoolean = extras.getBoolean("competitive")
+            category = extractedString!!
+            var extractedBoolean = extras.getBoolean("isCompetitive")
             competitive = extractedBoolean
-            extractedBoolean = extras.getBoolean("daily")
-            daily = extractedBoolean
-            */
+            extractedBoolean = extras.getBoolean("isDaily")
+            daily = extractedBoolean!!
         }
 
         // Make first character highlighted for user to know where to type
@@ -99,11 +96,15 @@ class PlayActivity : AppCompatActivity() {
                 tvTimeLeft.text = "STOP TYPING!"
 
                 calculateResults()
-                submitGameResults(points, speed, user, competitive, accuracy, daily, category)
 
+                // Hide Keyboard if game is finished
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(etKeyboardView.windowToken, 0)
 
+                if (competitive) {
+                    // Only submit game results if mode is competitive
+                    submitGameResults(points, speed, user, competitive, accuracy, daily, category)
+                }
                 goToResultsActivity()
             }
         }.start()
@@ -142,13 +143,16 @@ class PlayActivity : AppCompatActivity() {
                     // Account for last word character typed
                     wordsPerMinute += 1
 
-                    calculateResults()
-                    submitGameResults(points,speed,user, competitive, accuracy, daily, category)
-
+                    // Hide the keyboard after game finished
                     val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-
                     val etKeyboardView = findViewById<EditText>(R.id.etKeyboardView)
                     imm.hideSoftInputFromWindow(etKeyboardView.windowToken, 0)
+
+                    calculateResults()
+
+                    if (competitive) {
+                        submitGameResults(points,speed,user, competitive, accuracy, daily, category)
+                    }
 
                     goToResultsActivity()
                 }
@@ -184,6 +188,9 @@ class PlayActivity : AppCompatActivity() {
         accuracy = ((currentLetter.toDouble()/(currentLetter+numErrors))*100).toInt()
         points = wordsPerMinute * accuracy
         speed = wordsPerMinute
+        if(daily) {
+            points*=3
+        }
     }
 
     // Send Results of Game to Database
@@ -209,6 +216,7 @@ class PlayActivity : AppCompatActivity() {
         }
         // If the game isn't competitive, then it doesn't count towards player stats
         if (competitive) {
+            //Toast.makeText(this, "GOING TO UPDATE PLAYER STATS", Toast.LENGTH_SHORT).show()
             updateOverallPlayerStats()
         }
     }
@@ -245,7 +253,11 @@ class PlayActivity : AppCompatActivity() {
     }
 
     private fun goToResultsActivity() {
-        val intent = Intent(this@PlayActivity, ResultActivity::class.java)
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra("isDaily", daily)
+        intent.putExtra("speed", speed)
+        intent.putExtra("accuracy", accuracy)
+        //Toast.makeText(this, "NEXT LINE IS GOING TO RESULTS", Toast.LENGTH_SHORT).show()
         startActivity(intent)
         finish()
     }

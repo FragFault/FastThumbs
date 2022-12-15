@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simpletodo.PlayActivity
+import com.example.simpletodo.Player
 import com.example.simpletodo.R
+import com.parse.ParseQuery
+import com.parse.ParseUser
 import okhttp3.OkHttpClient
 
 import okhttp3.*
@@ -20,7 +24,11 @@ import java.util.concurrent.TimeUnit
 //Similar to a recycler view a carousel adapter is created
 
 class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, private val context: Context, private val comp: Boolean) : //The carousel data list must be a map with a key, value pair of String Drawable
+
     RecyclerView.Adapter<CarouselRVAdapter.CarouselItemViewHolder>() {
+
+    // Set Global variable isCompetitive
+    var isCompetitive:Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselItemViewHolder {
         val viewHolder = LayoutInflater.from(parent.context).inflate(R.layout.item_carousel, parent, false)
@@ -54,8 +62,11 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
         }
 
         override fun onClick(v: View?) {
+
             val category = carouselDataList.keys.elementAt(adapterPosition)
             Log.i(TAG, "$category")
+
+            retrieveIsCompetitive()
 
             if(category == "Poetry"){
                 prompt_Data = POETRY_URL
@@ -90,10 +101,10 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
                     val intent = Intent(context,PlayActivity::class.java)
                     intent.putExtra("prompt",jObject.get("prompt").toString())
                     Log.i("Adapter", comp.toString())
-                    intent.putExtra("isCompetetive", true)
-                    intent.putExtra("isDaily", true)
+                    intent.putExtra("category", selection.lowercase())
+                    intent.putExtra("isCompetitive", isCompetitive)
+                    intent.putExtra("isDaily", false)
                     context.startActivity(intent)
-
                 }
             }
         })
@@ -117,6 +128,21 @@ class CarouselRVAdapter(private val carouselDataList: Map<String, Drawable>, pri
 //                    Log.e(SelectionFragment.TAG, "Encountered exception $e")
 
 
+    }
+
+    fun retrieveIsCompetitive() {
+        val user = ParseUser.getCurrentUser()!!
+        val query = ParseQuery.getQuery(Player::class.java)
+        query.whereEqualTo(Player.KEY_USER, user)
+        query.findInBackground { playerObjects , e ->
+            if (e == null) {
+                for (playerObject in playerObjects) {
+                    isCompetitive = playerObject.getIsCompetitive()!!
+                }
+            } else {
+                Log.i("Adapter", "Error: Failure to query user stats in Players table")
+            }
+        }
     }
 
     companion object {

@@ -46,15 +46,15 @@ open class MainActivity : AppCompatActivity() {
 
                 R.id.action_home -> {
                     fragmentToShow = SelectionFragment()
-                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
                 }
                 R.id.action_leaderboard -> {
                     fragmentToShow = LeaderboardFragment()
-                    Toast.makeText(this, "LeaderBoard", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "LeaderBoard", Toast.LENGTH_SHORT).show()
                 }
                 R.id.action_profile -> {
                     fragmentToShow = UserProfileFragment()
-                    Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
                 }
             }
 
