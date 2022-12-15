@@ -10,9 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.simpletodo.PlayActivity
 import com.example.simpletodo.R
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.example.simpletodo.GameResults
 import com.example.simpletodo.Player
 //import com.codepath.asynchttpclient.AsyncHttpClient
 //import com.codepath.asynchttpclient.RequestParams
@@ -36,6 +35,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -47,11 +48,15 @@ class SelectionFragment : Fragment() {
     lateinit var profilePic : ImageView
     lateinit var user : ParseUser
 
+    var dontAllowDaily = false
+    var isCompetitive = false
+
+
     // TODO: Rename and change types of parameters
 
     companion object {
         const val TAG = "SelectionScreenMessages"
-        @JvmStatic var isCompetetive: Boolean = false
+        //@JvmStatic var isCompetitive: Boolean = false
     }
 
     override fun onCreateView(
@@ -81,6 +86,15 @@ class SelectionFragment : Fragment() {
         user = ParseUser.getCurrentUser()
         profiledetails()
 
+        var tvModes = view.findViewById<TextView>(R.id.tvModes)
+        retrieveIsCompetitive(user)
+        if(isCompetitive) {
+            tvModes.text = "Selected Mode: Competitive"
+        }
+        else {
+            tvModes.text = "Selected Mode: Casual"
+        }
+
         val titleString = "Let's Type"
 
 
@@ -96,21 +110,65 @@ class SelectionFragment : Fragment() {
             prompt_Data = MOVIE_URL
         }
 
+        view.findViewById<Button>(R.id.btnSwitchModes).setOnClickListener {
+            isCompetitive = !isCompetitive
+            if(isCompetitive) {
+                tvModes.text = "Selected Mode: Competitive"
+            }
+            else {
+                tvModes.text = "Selected Mode: Casual"
+            }
+            updateMode()
+        }
+        /*
         view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener {
-            isCompetetive = !isCompetetive
-//            Toast.makeText(requireContext(), "Switced Modes $isCompetetive", Toast.LENGTH_SHORT).show()
+            isCompetitive = !isCompetitive
+            Toast.makeText(requireContext(), "Switced Modes $isCompetitive", Toast.LENGTH_SHORT).show()
 
         }
+        */
 
         titleView.text = titleString + " " + player + "!"
+
         ivDaily.setOnClickListener(View.OnClickListener {
+            dontAllowDaily = false
+            val sdf = SimpleDateFormat("M/dd/yyyy")
+            var todaysDate = sdf.format(Date())
+            todaysDate = todaysDate.toString()
 
-            dataRetrieve(prompt_Data, "Movies")
-            if (it != null) {
-                it.setOnClickListener(null)
+            var parseDate = todaysDate.toString()
+
+            val query = ParseQuery.getQuery(GameResults::class.java)
+            query.whereEqualTo(GameResults.KEY_USER, user)
+            query.orderByDescending("updatedAt")
+            query.findInBackground { gamelogs, e ->
+                if (e != null) {
+                    //Something when wrong getting the game logs
+                } else {
+                    if (gamelogs != null) {
+                        for (gamelog in gamelogs) {
+                            parseDate = (sdf.format(gamelog.createdAt)).toString()
+                            if (parseDate == todaysDate) {
+                                if (gamelog.getDaily() == true) {
+                                    dontAllowDaily = true
+                                    Toast.makeText(context, "Daily Challenge Already Played Today!", Toast.LENGTH_SHORT).show()
+                                    break
+                                }
+                            }
+                            else {
+                                break
+                            }
+                        }
+                    }
+                }
             }
-
-        })
+            if(dontAllowDaily == false) {
+                dataRetrieve(prompt_Data, "Movies")
+                if (it != null) {
+                    it.setOnClickListener(null)
+                }
+            }
+            })
 
         viewPager.apply {
             clipChildren = false  // No clipping the left and right items
@@ -128,11 +186,11 @@ class SelectionFragment : Fragment() {
             )
 
         viewPager.adapter = requireContext()?.let {
-//            isCompetetive = !isCompetetive
+//            isCompetitive = !isCompetitive
 
-            Log.i(TAG, isCompetetive.toString())//Pass Context as a parameter for switching intents
+            Log.i(TAG, isCompetitive.toString())//Pass Context as a parameter for switching intents
             CarouselRVAdapter(demoData as Map<String, Drawable>,
-                it, isCompetetive
+                it, isCompetitive
             )
         }
 
@@ -201,14 +259,51 @@ class SelectionFragment : Fragment() {
                     val jObject = JSONObject(body)
                     val intent = Intent(context,PlayActivity::class.java)
                     intent.putExtra("prompt",jObject.get("prompt").toString())
+                    intent.putExtra("category", "none")
+                    intent.putExtra("isCompetitive", true)
+                    intent.putExtra("isDaily", true)
                     context?.startActivity(intent)
-
                 }
             }
         })
-
     }
 
+    fun retrieveIsCompetitive(user: ParseUser) {
+        val query = ParseQuery.getQuery(Player::class.java)
+        query.whereEqualTo(Player.KEY_USER, user)
+        query.findInBackground { playerObjects , e ->
+            if (e == null) {
+                for (playerObject in playerObjects) {
+                    isCompetitive = playerObject.getIsCompetitive()!!
+                }
+            } else {
+                Log.i(TAG, "Error: Failure to query user stats in Players table")
+            }
+        }
+    }
+
+    fun updateMode() {
+        val query = ParseQuery.getQuery(Player::class.java)
+        query.whereEqualTo(Player.KEY_USER, user)
+        query.findInBackground { playerObjects , e ->
+            if (e == null) {
+                for (playerObject in playerObjects) {
+                    playerObject.setIsCompetitve(isCompetitive!!)
+                    playerObject.saveInBackground { exception ->
+                        if (exception != null) {
+                            // Something has gone wrong
+                            Log.i(TAG, "Error: Failure to save mode preference to database!")
+                        }
+                        else {
+                            // No error saving to Players table
+                        }
+                    }
+                }
+            } else {
+                Log.i(TAG, "Error: Failure to query player preference in Players Table!")
+            }
+        }
+    }
 
 }
 
