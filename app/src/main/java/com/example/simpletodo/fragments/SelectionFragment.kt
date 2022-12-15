@@ -23,6 +23,7 @@ import com.example.simpletodo.R
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.simpletodo.GameResults
 import com.example.simpletodo.Player
+import com.parse.ParseObject
 //import com.codepath.asynchttpclient.AsyncHttpClient
 //import com.codepath.asynchttpclient.RequestParams
 //import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
@@ -70,6 +71,9 @@ class SelectionFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ParseObject.registerSubclass(GameResults::class.java)
+        ParseObject.registerSubclass(Player::class.java)
 
         getActivity()?.getActionBar()?.hide();
 

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import java.text.SimpleDateFormat
@@ -22,9 +23,11 @@ class ResultActivity: AppCompatActivity() {
     var accuracy = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_results)
 
+        ParseObject.registerSubclass(GameResults::class.java)
 
         var speedRes = findViewById<TextView>(R.id.speedRes)
         var accRes = findViewById<TextView>(R.id.accRes)
@@ -98,7 +101,7 @@ class ResultActivity: AppCompatActivity() {
         var todaysDate = sdf.format(Date())
         todaysDate = todaysDate.toString()
 
-        var parseDate = todaysDate.toString()
+        var parseDate = todaysDate
 
         val query = ParseQuery.getQuery(GameResults::class.java)
         query.whereEqualTo(GameResults.KEY_USER, user)

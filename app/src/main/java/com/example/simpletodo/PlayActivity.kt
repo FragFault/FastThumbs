@@ -85,7 +85,7 @@ class PlayActivity : AppCompatActivity() {
         tvPrompt.text = spannable
         tvErrors.text = "# Incorrect: " + numErrors
 
-        timer = object : CountDownTimer(5000, 1000) {
+        timer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 tvTimeLeft.text = "Seconds Left: " + millisUntilFinished / 1000
             }
@@ -216,6 +216,7 @@ class PlayActivity : AppCompatActivity() {
         }
         // If the game isn't competitive, then it doesn't count towards player stats
         if (competitive) {
+            //Toast.makeText(this, "GOING TO UPDATE PLAYER STATS", Toast.LENGTH_SHORT).show()
             updateOverallPlayerStats()
         }
     }
@@ -252,10 +253,11 @@ class PlayActivity : AppCompatActivity() {
     }
 
     private fun goToResultsActivity() {
-        val intent = Intent(this@PlayActivity, ResultActivity::class.java)
+        val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra("isDaily", daily)
         intent.putExtra("speed", speed)
         intent.putExtra("accuracy", accuracy)
+        //Toast.makeText(this, "NEXT LINE IS GOING TO RESULTS", Toast.LENGTH_SHORT).show()
         startActivity(intent)
         finish()
     }
